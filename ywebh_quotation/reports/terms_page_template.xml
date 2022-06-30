@@ -1,0 +1,84 @@
+<odoo>
+    <data>
+
+		<template id="terms_page_template">
+            <t t-if="not o" t-set="o" t-value="doc"/>
+
+            <t t-if="not company">
+                <!-- Multicompany -->
+                <t t-if="company_id">
+                    <t t-set="company" t-value="company_id"/>
+                </t>
+                <t t-elif="o and 'company_id' in o">
+                    <t t-set="company" t-value="o.company_id.sudo()"/>
+                </t>
+                <t t-else="else">
+                    <t t-set="company" t-value="res_company"/>
+                </t>
+            </t>
+
+            <div class="header">
+				<div class="row">
+					<div class="col-12">
+						<img src="/ywebh_quotation/static/img/ywe_logo.png" style="max-height: 170px; max-width: 140px;" alt="Logo"/>
+					</div>
+				</div>
+				<br/>
+				<div>
+					<img src="/ywebh_quotation/static/img/header-line.png" style="width: 100%;"/>
+				</div>
+				<br/>
+				<div class="row">
+					<div class="col-4">
+						<t t-if="company.phone">
+							<span style="font-size:15px;font-family: 'Lato', sans-serif;color:#231f20; font-weight:bold;">T.</span>
+							<span style="font-size:15px;font-family: 'Lato', sans-serif;color:#231f20; font-weight:bold; padding-left:1em;"><t t-esc="company.phone"/></span>
+						</t>
+					</div>
+					<div class="col-4">
+						<span style="font-size:15px;font-family: 'Lato', sans-serif;color:#231f20; font-weight:bold;">Kingdom of Bahrain</span>
+					</div>
+					<div class="col-4" style="text-align:right;">
+						<span style="font-size:15px;font-family: 'Lato', sans-serif;color:#231f20; font-weight:bold;">ywebh.com</span>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-4">
+						<t t-if="company.email">
+							<span style="font-size:15px;font-family: 'Lato', sans-serif;color:#231f20; font-weight:bold;">E.</span>
+							<span style="font-size:15px;font-family: 'Lato', sans-serif;color:#231f20; font-weight:bold; padding-left:1em;"><t t-esc="company.email"/></span>
+						</t>
+					</div>
+					<div class="col-8">
+						<t t-if="company.city">
+							<span style="font-size:15px;font-family: 'Lato', sans-serif;color:#231f20; font-weight:bold;"><t t-esc="company.city"/></span>
+						</t>
+					</div>
+				</div>
+			</div>
+
+            <div class="article o_report_layout_standard" t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id" t-att-data-oe-lang="o and o.env.context.get('lang')">
+                <t t-set="address"/>
+                <t t-call="web.address_layout"/>
+				<div class="page">
+                    <br/>
+                    <div class="row">
+                        <div class="col-12">
+                            <span style="font-size:15px;font-family: 'Lato', sans-serif;color:#231f20;" t-raw="o.sales_term.terms_html"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer o_standard_footer">
+                <div class="row">
+                    <div class="col-12">
+                        <img src="/ywebh_quotation/static/img/signature_footer.png" style="width: 100%;"/>
+                    </div>
+                </div>
+            </div>
+
+		</template>
+
+    </data>
+</odoo>

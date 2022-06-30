@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_pos_config_inherit_view_discount_form" model="ir.ui.view">
+        <field name="name">pos.config.form.view</field>
+        <field name="model">pos.config</field>
+        <field name="inherit_id" ref="point_of_sale.pos_config_view_form"/>
+        <field name="arch" type="xml">
+            <div id="pricelist_setting" position="after">
+                 <div class="col-xs-12 col-md-6 o_setting_box" >
+                    <div class="o_setting_right_pane">
+                        <label for="discount_type"/>
+                        <div class="mt16">
+                            <field name="discount_type" widget="radio"/>
+                            <field name="company_id" invisible="1" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </field>
+    </record>
+</odoo>

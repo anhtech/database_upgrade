@@ -1,0 +1,31 @@
+<odoo>
+  <data>
+      <record id="purchases_report_form" model="ir.ui.view">
+          <field name="name">report.purchases_report_form</field>
+          <field name="model">report.purchases_report_wizard</field>
+          <field name="arch" type="xml">
+              <form>
+                  <group>
+                      <field name="start_date"/>
+                      <field name="end_date"/>
+                  </group>
+                  <footer>
+                  <button name="action_submit" string="Submit" type="object"/>
+                  </footer>
+              </form>
+          </field>
+      </record>
+
+      <record id="action_all_purchases_report_wizard" model="ir.actions.act_window">
+          <field name="name">All Purchases Wizard</field>
+          <field name="res_model">report.purchases_report_wizard</field>
+          <field name="view_type">form</field>
+          <field name="view_mode">tree,form</field>
+         <field name="view_id" ref="purchases_report_form"/>
+         <field name="target">new</field>
+      </record>
+
+      <menuitem id="menu_all_purchases_report" name="All Purchases Report" action="action_all_purchases_report_wizard" parent="purchase.menu_purchase_root" sequence="5"/>
+
+  </data>
+</odoo>

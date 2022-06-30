@@ -1,0 +1,44 @@
+<odoo>
+  <data>
+
+    <menuitem id="menu_indemnity_root" name="Indemnity" parent="hr.menu_hr_root" sequence="3" groups="hr.group_hr_manager"/>
+
+    <record id="action_all_indemnity" model="ir.actions.act_window">
+        <field name="name">Indemnity</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">hr.contract.indemnity</field>
+        <field name="view_ids" eval="[(5, 0, 0),
+                          (0, 0, {'view_mode': 'tree', 'view_id': ref('hr_contract_indemnity_tree')}),
+                          (0, 0, {'view_mode': 'form', 'view_id': ref('hr_contract_indemnity_form')})]"/>
+        <field name="search_view_id" ref="search_hr_contract_indemnity"/>
+        <field name="context">{}</field>
+    </record>
+
+    <record id="action_pending_indemnity" model="ir.actions.act_window">
+        <field name="name">Pending Indemnity</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">hr.contract.indemnity</field>
+        <field name="view_ids" eval="[(5, 0, 0),
+                          (0, 0, {'view_mode': 'tree', 'view_id': ref('hr_contract_indemnity_tree')}),
+                          (0, 0, {'view_mode': 'form', 'view_id': ref('hr_contract_indemnity_form')})]"/>
+        <field name="search_view_id" ref="search_hr_contract_indemnity"/>
+        <field name="domain">[('state', '=', 'draft')]</field>
+    </record>
+
+    <record id="action_approved_indemnity" model="ir.actions.act_window">
+        <field name="name">Approved Indemnity</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">hr.contract.indemnity</field>
+        <field name="view_ids" eval="[(5, 0, 0),
+                          (0, 0, {'view_mode': 'tree', 'view_id': ref('hr_contract_indemnity_tree')}),
+                          (0, 0, {'view_mode': 'form', 'view_id': ref('hr_contract_indemnity_form')})]"/>
+        <field name="search_view_id" ref="search_hr_contract_indemnity"/>
+        <field name="domain">[('state', '=', 'approved')]</field>
+    </record>
+
+    <menuitem action="action_pending_indemnity" id="menu_action_pending_indemnity" parent="menu_indemnity_root" sequence="1" groups="hr.group_hr_manager"/>
+    <menuitem action="action_approved_indemnity" id="menu_action_approved_indemnity" parent="menu_indemnity_root" sequence="2" groups="hr.group_hr_manager"/>
+    <menuitem action="action_all_indemnity" id="menu_action_all_indemnity" parent="menu_indemnity_root" sequence="3" groups="hr.group_hr_manager"/>
+
+  </data>
+</odoo>

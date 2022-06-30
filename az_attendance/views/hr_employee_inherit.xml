@@ -1,0 +1,40 @@
+<odoo>
+  <data>
+		<record model="ir.ui.view" id="brc_employees_list_inherit">
+			<field name="name">hr.employee.brc_employees_list_inherit</field>
+			<field name="model">hr.employee</field>
+			<field name="inherit_id" ref="hr.view_employee_filter" />
+			<field name="arch" type="xml">
+				<xpath expr="//search" position="inside">
+					<filter string="Muslims" name="show_muslims" domain="[('employee_religion','=','Muslim')]"/>
+					<filter string="Male Employees" name="show_males" domain="[('gender','=','male')]"/>
+					<filter string="Female Employees" name="show_females" domain="[('gender','=','female')]"/>
+				</xpath>
+			</field>
+		</record>
+	  <record model="ir.ui.view" id="brc_employee_inherited">
+		<field name="name">hr.employee.brc_employees_inherited</field>
+		<field name="model">hr.employee</field>
+		<field name="inherit_id" ref="hr.view_employee_form" />
+		<field name="arch" type="xml">
+			<xpath expr="//field[@name='resource_calendar_id']" position="after">
+				<field name="special_attendance"/>
+			</xpath>
+		</field>
+	  </record>
+<!--	  <record model="ir.ui.view" id="brc_employee_tree_inherited">-->
+<!--		<field name="name">hr.employee.brc_employee_tree_inherited</field>-->
+<!--		<field name="model">hr.employee</field>-->
+<!--		<field name="inherit_id" ref="hr.view_employee_tree" />-->
+<!--		<field name="arch" type="xml">-->
+<!--			<xpath expr="//field[@name='name']" position="before">-->
+<!--				<field name="barcode"/>-->
+<!--			</xpath>-->
+<!--		</field>-->
+<!--	  </record>-->
+
+
+
+
+  </data>
+</odoo>

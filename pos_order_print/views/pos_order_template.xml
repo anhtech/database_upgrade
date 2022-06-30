@@ -1,0 +1,226 @@
+<odoo>
+    <data>
+        <template id="pos_order_template_document">
+            <t t-if="not o" t-set="o" t-value="doc"/>
+
+            <t t-if="not company">
+                <!-- Multicompany -->
+                <t t-if="company_id">
+                    <t t-set="company" t-value="company_id"/>
+                </t>
+                <t t-elif="o and 'company_id' in o">
+                    <t t-set="company" t-value="o.company_id.sudo()"/>
+                </t>
+                <t t-else="else">
+                    <t t-set="company" t-value="res_company"/>
+                </t>
+            </t>
+
+            <div class="header">
+                <div class="row">
+                    <div class="col-12 mt24">
+                        <center>
+                            <img t-if="company.logo" t-att-src="image_data_uri(company.logo)" style="max-height: 180px;" alt="Logo"/>
+                        </center>
+                    </div>
+                </div>
+            </div>
+
+            <div class="article o_report_layout_standard"  t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id" t-att-data-oe-lang="o and o.env.context.get('lang')">
+                <t t-set="address"/>
+<!--                <t t-set="address">-->
+<!--                    <address t-field="o.partner_id" t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": True}' />-->
+<!--                    <div t-if="o.partner_id.vat" class="mt16"><t t-esc="o.company_id.country_id.vat_label or 'VAT ID'"/>: <span t-field="o.partner_id.vat"/></div>-->
+<!--                </t>-->
+                <t t-call="web.address_layout"/>
+                <div class="page">
+                    <style>
+                        tr.products:nth-child(even){background-color: #f2f2f2;}
+                    </style>
+                    <br/>
+                    <table width="100%">
+                        <colgroup>
+                            <col width='50%' />
+                            <col width='50%' />
+                        </colgroup>
+                        <tr>
+                            <td>
+                                <h4>
+                                    <span style="color: #50141b;">
+                                        <span t-field="o.pos_reference"/>
+                                    </span>
+                                </h4>
+                            </td>
+                            <td style='text-align:right;'>
+                                <h4>
+                                    <span style="color: #50141b;">
+                                        CASHIER: <span t-field="o.user_id"/>
+                                    </span>
+                                </h4>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td/>
+                            <td style='text-align:right;'>
+                                <h4>
+                                    <span style="color: #50141b;">
+                                        ORDER DATE: <span t-esc="o.date_order.strftime('%Y-%m-%d')" t-options='{"widget": "date"}'/>
+                                    </span>
+                                </h4>
+                            </td>
+                        </tr>
+                    </table>
+                    <br/>
+                    <div>
+                        <h3>
+                            <span style="color: #50141b;">
+                                 <strong>RECEIVED WITH THANKS FROM <t t-if="o.partner_id"><span style="text-transform:uppercase" t-field="o.partner_id"/></t></strong>
+                            </span>
+                        </h3>
+                    </div>
+                    <br/>
+                    <table width="100%">
+                        <colgroup>
+                            <col width='25%' />
+                            <col width='25%' />
+                            <col width='25%' />
+                            <col width='25%' />
+                        </colgroup>
+                        <t t-set="lines" t-value=" -(-len(o.config_id.journal_ids) // 3.0)"/>
+                        <tr>
+                            <td t-foreach="o.paid_with" t-as="journal_id">
+                                <h3>
+                                    <span style="color: #50141b;">
+                                        ☑ <span t-field="journal_id.name"/>
+                                    </span>
+                                </h3>
+                            </td>
+                            <td t-foreach="o.notpaid_with" t-as="journal_id">
+                                <h3>
+                                    <span style="color: #50141b;">
+                                        ☐ <span t-field="journal_id.name"/>
+                                    </span>
+                                </h3>
+                            </td>
+                        </tr>
+                    </table>
+                    <br/>
+                    <br/>
+                    <t t-set='qty_count' t-value='0.0'/>
+                    <table class='receipt-orderlines' width="100%">
+                        <colgroup>
+                            <col width='40%' />
+                            <col width='15%' />
+                            <col width='15%' />
+                            <col width='30%' />
+                        </colgroup>
+                        <tr>
+                            <th height="50" style="background-color:#50141b; color:white; border-right:0px; vertical-align:middle;"><center><strong style="margin-left: 10px;">Name</strong></center></th>
+                            <th height="50" style="background-color:#50141b; color:white; border-right:0px; vertical-align:middle;"><center><strong>Quantity</strong></center></th>
+                            <th height="50" style="background-color:#50141b; color:white; border-right:0px; vertical-align:middle;"><center><strong>Unit Price</strong></center></th>
+                            <th height="50" style='background-color:#50141b; text-align:right; color:white; border-right:0px; vertical-align:middle;'><center><strong style="margin-right: 10px;">Total</strong></center></th>
+                        </tr>
+                        <tr class="products" t-foreach="o.lines" t-as="orderline">
+                            <t t-set='qty_count' t-value='qty_count+orderline.qty'/>
+                            <td height="50" style="border-right:2px solid white; vertical-align:middle;">
+                                <center>
+                                    <span style="margin-left: 10px;">
+                                        <t t-esc="orderline.product_id.name"/>
+                                    </span>
+                                    <t t-if="orderline.discount > 0">
+                                        <t t-if="o.discount_type == 'per'">
+                                            <div class="pos-disc-font">
+                                                With a <t t-esc="orderline.discount"/>% discount
+                                            </div>
+                                        </t>
+                                        <t t-else="">
+                                            <div class="pos-disc-font">
+                                                With a <t t-esc="orderline.discount" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/> discount
+                                            </div>
+                                        </t>
+                                    </t>
+                                </center>
+                            </td>
+                            <td height="50" style="border-right:2px solid white; vertical-align:middle;">
+                                <center>
+                                    <t t-esc="orderline.qty"/>
+                                </center>
+                            </td>
+                            <td height="50" style="border-right:2px solid white; vertical-align:middle;">
+                                <center>
+                                   <t t-esc="orderline.price_subtotal" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                </center>
+                            </td>
+                            <td height="50" style='text-align:right; vertical-align:middle;'>
+                                <center>
+                                    <span style="margin-right: 10px;" t-esc="orderline.price_subtotal_incl" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                </center>
+                            </td>
+                        </tr>
+                        <tr class="products">
+                            <td colspan="3" height="50" style="border-right:2px solid white; vertical-align:middle; text-align:right;">
+                                SUBTOTAL
+                            </td>
+                            <td height="50" style='text-align:right; vertical-align:middle;'>
+                                <center>
+                                    <span t-esc="o.amount_total-o.amount_tax" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                </center>
+                            </td>
+                        </tr>
+                        <tr class="products">
+                            <td colspan="3" height="50" style="border-right:2px solid white; vertical-align:middle; text-align:right;">
+                                TOTAL
+                            </td>
+                            <td height="50" style='text-align:right; vertical-align:middle;'>
+                                <center>
+                                    <span t-esc="o.amount_total" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                </center>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <div class="footer o_standard_footer">
+                <div class="row">
+                    <div class="col-8">
+                        <t t-if="company.social_instagram">
+                            <div>
+                                <img src="/pos_order_print/static/img/instagram.png" width="25px" height="25px"/>
+                                <span style="color: #50141b;" t-field="company.social_instagram"/>
+                            </div>
+                        </t>
+                        <t t-if="company.email">
+                            <div class="mt16">
+                                <img src="/pos_order_print/static/img/email.png" width="25px" height="25px"/>
+                                <span style="color: #50141b;" t-field="company.email"/>
+                            </div>
+                        </t>
+                        <t t-if="company.phone">
+                            <div class="mt16">
+                                <img src="/pos_order_print/static/img/smartphone.png" width="25px" height="25px"/>
+                                <span style="color: #50141b;" t-field="company.phone"/>
+                            </div>
+                        </t>
+                    </div>
+                    <div class="col-4">
+                        <br/>
+                        <h2>
+                            <strong style="color: #50141b;">
+                                R E C E I P T
+                            </strong>
+                        </h2>
+                    </div>
+                </div>
+            </div>
+        </template>
+
+        <template id="pos_order_template">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="pos_order_print.pos_order_template_document"/>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>

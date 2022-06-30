@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data>
+<template id="sales_pos_report_template">
+    <t t-call="web.html_container">
+        <t t-call="web.internal_layout">
+            <div class="page">
+
+                <div class="text-center">
+                    <h2>All Sales Details</h2>
+
+                    <strong><t t-esc="start_date" /> - <t t-esc="end_date" /></strong>
+                </div>
+
+                <h3>Invoices</h3>
+                <table class="table table-sm">
+                    <thead><tr>
+                        <th>Invoice Number</th>
+                        <th>Customer</th>
+                        <th>Total Amount</th>
+                        <th>Amount Due</th>
+                        <th>Payment Percentage</th>
+                    </tr></thead>
+                    <tbody>
+                    <tr t-foreach='sales_quotations' t-as='id'>
+                        <td><t t-esc="sales_quotations[id]['quotation_number']" /></td>
+                        <td><t t-esc="sales_quotations[id]['partner']" /></td>
+                        <td><t t-esc='sales_quotations[id]["payment_amount"]' t-options='{"widget": "float", "precision": 3}' /></td>
+                        <td><t t-esc='sales_quotations[id]["amount_due"]' t-options='{"widget": "float", "precision": 3}' /></td>
+                        <td><t t-esc='sales_quotations[id]["payment_percentage"]' t-options='{"widget": "float", "precision": 2}' />%</td>
+                    </tr>
+                    <tr>
+                        <td><b>Total</b></td>
+                        <td><b><t t-esc="sum(sales_quotations[id]['payment_amount'] for id in sales_quotations)" t-options="{'widget': 'float', 'precision': 3}"/></b></td>
+                        <td><b><t t-esc="sum(sales_quotations[id]['amount_due'] for id in sales_quotations)" t-options="{'widget': 'float', 'precision': 3}"/></b></td>
+                        <td></td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <br/>
+
+                <h3>Sales Products</h3>
+                <table class="table table-sm">
+                    <thead><tr>
+                        <th>Product</th>
+                        <th>Quantity</th>
+                        <th>Price Unit</th>
+                        <th>Taxable Amount</th>
+<!--                        <th>VAT</th>-->
+<!--                        <th>Amount Incl. VAT</th>-->
+                    </tr></thead>
+                    <tbody>
+                    <tr t-foreach='sales_products' t-as='id'>
+                        <td><t t-esc="sales_products[id]['name']" /></td>
+                        <td>
+                            <t t-esc="sales_products[id]['quantity']" />
+                            <t t-if='sales_products[id]["uom_name"] != "Unit(s)"'>
+                                <t t-esc='sales_products[id]["uom_name"]' />
+                            </t>
+                        </td>
+                        <td>
+                            <t t-esc='sales_products[id]["unit_price"]' t-options='{"widget": "float", "precision": 3}' />
+                        <t t-if='sales_products[id]["discount"] != 0'>
+                            Disc: <t t-esc='sales_products[id]["discount"]' />%
+                        </t>
+                        </td>
+                        <td><t t-esc='sales_products[id]["taxable_amount"]' t-options='{"widget": "float", "precision": 3}' /></td>
+<!--                        <td><t t-esc='sales_products[id]["VAT"]' t-options='{"widget": "float", "precision": 3}' /></td>-->
+<!--                        <td><t t-esc='sales_products[id]["amount_incl_VAT"]' t-options='{"widget": "float", "precision": 3}' /></td>-->
+                    </tr>
+                    </tbody>
+                </table>
+
+                <br/>
+
+                <h3>POS Products</h3>
+                <table class="table table-sm">
+                    <thead><tr>
+                        <th>Product</th>
+                        <th>Quantity</th>
+                        <th>Price Unit</th>
+                        <th>Taxable Amount</th>
+<!--                        <th>VAT</th>-->
+<!--                        <th>Amount Incl. VAT</th>-->
+                    </tr></thead>
+                    <tbody>
+                    <tr t-foreach='all_pos_products' t-as='id'>
+                        <td><t t-esc="all_pos_products[id]['name']" /></td>
+                        <td>
+                            <t t-esc="all_pos_products[id]['quantity']" />
+                            <t t-if='all_pos_products[id]["uom_name"] != "Unit(s)"'>
+                                <t t-esc='all_pos_products[id]["uom_name"]' />
+                            </t>
+                        </td>
+                        <td>
+                            <t t-esc='all_pos_products[id]["unit_price"]' t-options='{"widget": "float", "precision": 3}' />
+                        <t t-if='all_pos_products[id]["discount"] != 0'>
+                            Disc: <t t-esc='all_pos_products[id]["discount"]' />%
+                        </t>
+                        </td>
+                        <td><t t-esc='all_pos_products[id]["taxable_amount"]' t-options='{"widget": "float", "precision": 3}' /></td>
+                        <td><t t-esc='all_pos_products[id]["VAT"]' t-options='{"widget": "float", "precision": 3}' /></td>
+                        <td><t t-esc='all_pos_products[id]["amount_incl_VAT"]' t-options='{"widget": "float", "precision": 3}' /></td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <div style="page-break-after: always;"/>
+
+                <h3>Sales Payments</h3>
+                <table  class="table table-sm">
+                    <thead><tr>
+                        <th>Name</th>
+                        <th>Total</th>
+                    </tr></thead>
+                    <tbody>
+                    <tr t-foreach='sales_payments' t-as='payment'>
+                        <td><t t-esc="sales_payments[payment]['payment_name']" /></td>
+                        <td><t t-esc="sales_payments[payment]['payment_amount']" t-options="{'widget': 'float', 'precision': 3}"/></td>
+                    </tr>
+                    <tr>
+                        <td><b>Total</b></td>
+                        <td><b><t t-esc="sum(sales_payments[payment]['payment_amount'] for payment in sales_payments)" t-options="{'widget': 'float', 'precision': 3}"/></b></td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <br/>
+
+                <h3>POS Payments</h3>
+                <table  class="table table-sm">
+                    <thead><tr>
+                        <th>Name</th>
+                        <th>Total</th>
+                    </tr></thead>
+                    <tbody>
+                    <tr t-foreach='all_pos_payments' t-as='payment'>
+                        <td><t t-esc="all_pos_payments[payment]['payment_name']" /></td>
+                        <td><t t-esc="all_pos_payments[payment]['payment_amount']" t-options="{'widget': 'float', 'precision': 3}"/></td>
+                    </tr>
+                    <tr>
+                        <td><b>Total</b></td>
+                        <td><b><t t-esc="sum(all_pos_payments[payment]['payment_amount'] for payment in all_pos_payments)" t-options="{'widget': 'float', 'precision': 3}"/></b></td>
+                    </tr>
+                    </tbody>
+                </table>
+
+<!--                <br/>-->
+
+<!--                <h3>Taxes</h3>-->
+<!--                <table  class="table table-sm">-->
+<!--                    <thead><tr>-->
+<!--                        <th>Name</th>-->
+<!--                        <th>Tax Amount</th>-->
+<!--&lt;!&ndash;                        <th>Base Amount</th>&ndash;&gt;-->
+<!--                    </tr></thead>-->
+<!--                    <tbody>-->
+<!--                    <tr>-->
+<!--                        <td>VAT %5.00</td>-->
+<!--                        <td><t t-esc="VAT[0]" t-options="{'widget': 'float', 'precision': 3}"/></td>-->
+<!--&lt;!&ndash;                        <td><t t-esc="VAT[1]" t-options="{'widget': 'float', 'precision': 3}"/></td>&ndash;&gt;-->
+<!--                    </tr>-->
+<!--                    </tbody>-->
+<!--                </table>-->
+
+<!--                <br/>-->
+<!--                <br/>-->
+
+<!--                <strong>Total: <t t-esc='total_paid' t-options="{'widget': 'float', 'precision': currency_precision}"/></strong>-->
+
+            </div>
+        </t>
+    </t>
+</template>
+
+</data>
+</odoo>
+

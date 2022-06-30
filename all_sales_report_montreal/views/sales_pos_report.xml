@@ -1,0 +1,15 @@
+<odoo>
+    <data>
+        <report
+            id="all_sales_report_pdf"
+            string="All Sales Report"
+            model="report.sales_pos_report_wizard"
+            report_type="qweb-pdf"
+            menu="False"
+            file="all_sales_report_montreal.sales_pos_report_template"
+            name="all_sales_report_montreal.sales_pos_report_template"
+        />
+
+
+    </data>
+</odoo>

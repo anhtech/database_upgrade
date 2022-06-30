@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_partner_form" model="ir.ui.view">
+        <field name="name">res.partner.form.inherit2</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr='//label[@for="street"]' position="replace">
+              <label for="country_id" string="Address"/>
+            </xpath>
+            <xpath expr='//field[@name="street"]' position="replace"/>
+            <xpath expr='//field[@name="street2"]' position="replace"/>
+            <xpath expr='//field[@name="city"]' position="replace"/>
+            <xpath expr='//field[@name="state_id"]' position="replace"/>
+            <xpath expr='//field[@name="is_company"]' position="after">
+                <field name="state_id" invisible="1"/>
+            </xpath>
+            <xpath expr='//field[@name="zip"]' position="replace"/>
+            <xpath expr='//field[@name="country_id"]' position="after">
+              <field name="city" placeholder="City" class="o_address_street" attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}"/>
+              <field name="zip" placeholder="Block" class="o_address_street" attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}"/>
+              <field name="street" placeholder="Street" class="o_address_street" attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}"/>
+              <field name="street2" placeholder="House" class="o_address_street" attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

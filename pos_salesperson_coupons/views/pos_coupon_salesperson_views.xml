@@ -1,0 +1,97 @@
+<odoo>
+  <data>
+
+      <record id="pos_coupon_salesperson_form" model="ir.ui.view">
+          <field name="name">pos.coupon.salesperson.form</field>
+          <field name="model">pos.coupon.salesperson</field>
+          <field name="arch" type="xml">
+              <form string="Coupon">
+                  <sheet>
+                      <field name="currency_id" invisible="1"/>
+                      <div class="oe_title">
+                          <label for="ref" class="oe_edit_only"/>
+                          <h1>
+                              <field name="ref" placeholder="Coupon Code" required="True"/>
+                          </h1>
+                      </div>
+                      <group>
+                          <group>
+                              <field name="salesperson_id"/>
+                              <field name="salesperson_commission" attrs="{'required': [('salesperson_id','!=',False)], 'readonly': [('salesperson_id','=',False)]}"/>
+                          </group>
+                          <group>
+                              <field name="number_of_used" attrs="{'readonly': True}"/>
+                              <field name="number_of_available"/>
+<!--                              <field name="valid_til"/>-->
+                          </group>
+                      </group>
+                      <group>
+                          <group>
+                              <field name="is_discount_products" attrs="{'readonly': [('is_discount_on_all_products','=',True)]}"/>
+                              <field name="discount_all_products_per" attrs="{'invisible': [('is_discount_on_all_products','=',False)], 'required': [('is_discount_on_all_products','=',True)]}"/>
+                          </group>
+                          <group>
+                              <field name="is_discount_on_all_products"/>
+                          </group>
+                      </group>
+                      <field name="product_lines" nolabel="1" attrs="{'invisible': ['|', ('is_discount_on_all_products', '=', True), ('is_discount_products', '=', False)]}">
+                          <tree editable="bottom">
+                              <field name="product_id" />
+                              <field name="discount_per" />
+                          </tree>
+                          <form>
+                              <group col="4">
+                                  <field name="product_id"/>
+                                  <field name="discount_per"/>
+                              </group>
+                          </form>
+                      </field>
+                      <group>
+                          <group>
+                              <field name="is_discount_value"/>
+                          </group>
+                          <group>
+                              <field name="discount_value" attrs="{'invisible': [('is_discount_value','=',False)], 'required': [('is_discount_value','=',True)]}"/>
+                          </group>
+                      </group>
+                  </sheet>
+                  <div class="oe_chatter">
+                      <field name="message_follower_ids" widget="mail_followers" />
+                      <field name="activity_ids" widget="mail_activity" />
+                      <field name="message_ids" widget="mail_thread" />
+                  </div>
+              </form>
+          </field>
+      </record>
+
+      <record model="ir.ui.view" id="search_pos_coupon_salesperson">
+          <field name="name">Coupons Filter</field>
+          <field name="model">pos.coupon.salesperson</field>
+          <field name="arch" type="xml">
+              <search string="Coupons Filter">
+                  <field name="ref"/>
+                  <field name="salesperson_id"/>
+                  <field name="valid_til"/>
+                  <group expand="0" string="Group By">
+                      <filter name="group_by_salesperson" string="Group by Salesperson" domain="[]" context="{'group_by': 'salesperson_id'}"/>
+                  </group>
+              </search>
+          </field>
+      </record>
+
+      <record id="pos_coupon_salesperson_tree" model="ir.ui.view">
+          <field name="name">pos.coupon.salesperson.tree</field>
+          <field name="model">pos.coupon.salesperson</field>
+          <field name="arch" type="xml">
+              <tree>
+                  <field name="ref"/>
+                  <field name="salesperson_id"/>
+                  <field name="number_of_used"/>
+                  <field name="number_of_available" />
+                  <field name="valid_til" />
+              </tree>
+          </field>
+      </record>
+
+  </data>
+</odoo>

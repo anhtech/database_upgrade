@@ -1,0 +1,9 @@
+<odoo>
+  <data>
+      <menuitem
+          id="stock_report_menuitem"
+          name="Inventory Profitability Report"
+          parent="stock.menu_warehouse_report"
+          action="action_inventory_report"/>
+  </data>
+</odoo>

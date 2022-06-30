@@ -1,0 +1,30 @@
+ <odoo>
+    <data>
+        <record id="receipt_A4_letterhead" model="report.paperformat">
+            <field name="name">Receipt Letterhead A4</field>
+            <field name="default" eval="True" />
+            <field name="format">A4</field>
+            <field name="page_height">0</field>
+            <field name="page_width">0</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">80</field>
+            <field name="margin_bottom">35</field>
+            <field name="margin_left">12</field>
+            <field name="margin_right">12</field>
+            <field name="header_line" eval="False" />
+            <field name="header_spacing">50</field>
+            <field name="dpi">90</field>
+        </record>
+
+        <report
+            id="action_report_payment_receipt_ywe_letterhead"
+            model="account.payment"
+            string="Payment Receipt Letterhead (Ywe)"
+            report_type="qweb-pdf"
+            name="ywebh_receipt_letterhead.report_payment_receipt_ywe_letterhead"
+            file="ywebh_receipt_letterhead.report_payment_receipt_ywe_letterhead"
+            menu="True"
+            paperformat="ywebh_receipt_letterhead.receipt_A4_letterhead"
+        />
+    </data>
+ </odoo>

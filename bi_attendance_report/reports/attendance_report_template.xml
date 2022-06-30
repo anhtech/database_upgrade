@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data>
+<template id="attendance_report_template_document">
+        <t t-if="not o and doc">
+            <t t-set="o" t-value="doc"/>
+        </t>
+
+        <t t-if="o and 'company_id' in o">
+            <t t-set="company" t-value="o.company_id.sudo()"/>
+        </t>
+        <t t-if="not o or not 'company_id' in o">
+            <t t-set="company" t-value="res_company"/>
+        </t>
+
+        <div class="article o_report_layout_background">
+
+        <div class="page">
+            <div class="row">
+                <div class="col-3">
+                    <img t-if="company.logo" t-att-src="'data:image/png;base64,%s' % to_text(company.logo)" height="54" width="180"/>
+                </div>
+                <div class="col-6" name="company_address"><center>
+                        <ul class="list-unstyled">
+                            <li t-if="o.name">Employee Name: <span t-field="o.name"/></li>
+                            <li>Individual Attendance Report (<span t-esc="data['report_type']"/>)</li>
+                            <li>From: <span t-esc="data['start_date']"/>  To:  <span t-esc="data['end_date']"/></li>
+                        </ul>
+                </center></div>
+                <div class="col-3" name="company_address">
+                    <ul class="list-unstyled">
+                        <li style="text-align: right;">Date: <span t-esc="data['printing_date']"/></li>
+                        <li style="text-align: right;">Time: <span t-esc="data['printing_time']"/></li>
+                    </ul>
+                </div>
+            </div>
+<!--        <table  style="border: 1px solid black;" width="100%">-->
+<!--             <thead>-->
+<!--                    <tr style="border: 1px solid black;">-->
+<!--                        <th style="border: 1px solid black;" width="15%">  Employee-ID</th>-->
+<!--                        <th style="border: 1px solid black;" width="50%">  Name</th>-->
+<!--                        &lt;!&ndash; <th style="border: 1px solid black;">Department</th> &ndash;&gt;-->
+<!--                        <th style="border: 1px solid black;" width="35%">  Job</th>-->
+<!--                        &lt;!&ndash; <th style="border: 1px solid black;">Coach</th> &ndash;&gt;-->
+
+<!--                            </tr>-->
+<!--                        </thead>-->
+<!--            <tr style="border: 1px solid black;">-->
+<!--        	    <td style="border: 1px solid black;"><span t-esc="o.id"/></td>-->
+<!--                <td style="border: 1px solid black;"><span t-field="o.name"/></td>-->
+<!--                &lt;!&ndash; <td style="border: 1px solid black;"><span t-esc="o.department_id.name"/></td> &ndash;&gt;-->
+<!--                <td style="border: 1px solid black;"><span t-esc="o.job_id.name"/></td>-->
+<!--                &lt;!&ndash; <td style="border: 1px solid black;"><span t-esc="o.coach_id.name"/></td> &ndash;&gt;-->
+
+
+<!--        </tr>-->
+<!--        </table><br/>-->
+            <div class="row">
+                    <table class="table table-condensed">
+                        <thead>
+                    <tr>
+                        <th class="text-left">Sign In</th>
+                        <th class="text-center">Sign Out</th>
+                        <t t-if="data['report_type'] == 'detailed'">
+                            <th class="text-center">Real Overtime 1</th>
+                        </t>
+                        <th class="text-center">Overtime 1</th>
+<!--                        <t t-if="data['report_type'] == 'detailed'">-->
+<!--                            <th class="text-center">Real Overtime 2</th>-->
+<!--                        </t>-->
+<!--                        <th class="text-center">Overtime 2</th>-->
+<!--                        <t t-if="data['report_type'] == 'detailed'">-->
+<!--                            <th class="text-center">Real Late Login</th>-->
+<!--                        </t>-->
+                        <th class="text-center">Lateness</th>
+<!--                        <t t-if="data['report_type'] == 'detailed'">-->
+<!--                            <th class="text-center">Real Early Logout</th>-->
+<!--                        </t>-->
+<!--                        <th class="text-center">Early Logout</th>-->
+                        <t t-if="data['report_type'] == 'detailed'">
+                            <th class="text-center">Real Attendance</th>
+                        </t>
+                        <th class="text-right">Attendance</th>
+                        <!-- <th class="text-right">State</th> -->
+                        </tr>
+                        </thead>
+                        <t t-foreach="att_ids" t-as="main">
+                            <tr>
+                                <td class="text-left"><span style="font-size: 90%;" t-field="main.check_in_timezone"/></td>
+                                <td class="text-center"><span style="font-size: 90%;" t-field="main.check_out_timezone"/></td>
+                                <t t-if="data['report_type'] == 'detailed'">
+                                    <td class="text-center"><span t-field="main.real_OT1_attendance" t-options='{"widget": "float_time"}' /></td>
+                                </t>
+                                <td class="text-center"><span t-field="main.OT1_attendance" t-options='{"widget": "float_time"}' /></td>
+<!--                                <t t-if="data['report_type'] == 'detailed'">-->
+<!--                                    <td class="text-center"><span t-field="main.real_OT2_attendance" t-options='{"widget": "float_time"}' /></td>-->
+<!--                                </t>-->
+<!--                                <td class="text-center"><span t-field="main.OT2_attendance" t-options='{"widget": "float_time"}' /></td>-->
+<!--                                <t t-if="data['report_type'] == 'detailed'">-->
+<!--                                    <td class="text-center"><span t-field="main.real_morning_lateness" t-options='{"widget": "float_time"}' /></td>-->
+<!--                                </t>-->
+                                <td class="text-center"><span t-field="main.lateness" t-options='{"widget": "float_time"}' /></td>
+<!--                                <t t-if="data['report_type'] == 'detailed'">-->
+<!--                                    <td class="text-center"><span t-field="main.real_evening_lateness" t-options='{"widget": "float_time"}' /></td>-->
+<!--                                </t>-->
+<!--                                <td class="text-center"><span t-field="main.evening_lateness" t-options='{"widget": "float_time"}' /></td>-->
+                                <t t-if="data['report_type'] == 'detailed'">
+                                    <td class="text-center"><span t-field="main.real_normal_attendance" t-options='{"widget": "float_time"}' /></td>
+                                </t>
+                                <td class="text-right"><span t-field="main.normal_attendance" t-options='{"widget": "float_time"}' /></td>
+                            </tr>
+                        </t>
+                        <tr>
+                            <td class="text-left"><strong>Total</strong></td>
+                            <td class="text-center"></td>
+                            <t t-if="data['report_type'] == 'detailed'">
+                                <td class="text-center"><strong><span t-esc="sum(line.real_OT1_attendance for line in att_ids)" t-options='{"widget": "float_time"}' /></strong></td>
+                            </t>
+                            <td class="text-center"><strong><span t-esc="sum(line.OT1_attendance for line in att_ids)" t-options='{"widget": "float_time"}' /></strong></td>
+<!--                            <t t-if="data['report_type'] == 'detailed'">-->
+<!--                                <td class="text-center"><strong><span t-esc="sum(line.real_OT2_attendance for line in att_ids)" t-options='{"widget": "float_time"}' /></strong></td>-->
+<!--                            </t>-->
+<!--                            <td class="text-center"><strong><span t-esc="sum(line.OT2_attendance for line in att_ids)" t-options='{"widget": "float_time"}' /></strong></td>-->
+<!--                            <t t-if="data['report_type'] == 'detailed'">-->
+<!--                                <td class="text-center"><strong><span t-esc="sum(line.real_morning_lateness for line in att_ids)" t-options='{"widget": "float_time"}' /></strong></td>-->
+<!--                            </t>-->
+                            <td class="text-center"><strong><span t-esc="sum(line.lateness for line in att_ids)" t-options='{"widget": "float_time"}' /></strong></td>
+<!--                            <t t-if="data['report_type'] == 'detailed'">-->
+<!--                                <td class="text-center"><strong><span t-esc="sum(line.real_evening_lateness for line in att_ids)" t-options='{"widget": "float_time"}' /></strong></td>-->
+<!--                            </t>-->
+<!--                            <td class="text-center"><strong><span t-esc="sum(line.evening_lateness for line in att_ids)" t-options='{"widget": "float_time"}' /></strong></td>-->
+                            <t t-if="data['report_type'] == 'detailed'">
+                                <td class="text-center"><strong><span t-esc="sum(line.real_normal_attendance for line in att_ids)" t-options='{"widget": "float_time"}' /></strong></td>
+                            </t>
+                            <td class="text-right"><strong><span t-esc="sum(line.normal_attendance for line in att_ids)" t-options='{"widget": "float_time"}' /></strong></td>
+                        </tr>
+                    </table>
+                </div>
+                <t t-if="data['log_discrepancy']['early_logout'] == True or data['log_discrepancy']['late_login'] == True or data['log_discrepancy']['missing_logout'] == True or data['log_discrepancy']['absent_lookup'] == True">
+                    <ul class="list-unstyled">
+                        <li><strong>Log Discrepancy:</strong></li>
+<!--                                style="float: left;"-->
+                            <t t-foreach="att_ids" t-as="main">
+                                <t t-if="data['log_discrepancy']['late_login'] == True">
+                                    <li t-if="main.lateness>0">
+                                        <span t-field="main.check_in_timezone"/><span>&#160;&#160;&#160;&#160;IN&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Lateness</span>
+                                    </li>
+                                </t>
+<!--                                <t t-if="data['log_discrepancy']['early_logout'] == True">-->
+<!--                                    <li t-if="main.real_evening_lateness>0">-->
+<!--                                        <span t-field="main.check_out_timezone"/><span>&#160;&#160;&#160;&#160;OUT&#160;&#160;&#160;&#160;Early Log Out</span>-->
+<!--                                    </li>-->
+<!--                                </t>-->
+                                <t t-if="data['log_discrepancy']['missing_logout'] == True">
+                                    <li t-if="(not main.check_out_timezone) or (main.check_out_timezone == '')">
+                                        <span t-field="main.check_in_timezone" t-options='{"format": "dd/MM/yyyy"}'/><span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Missing Log Out</span>
+                                    </li>
+                                </t>
+
+                            </t>
+                            <t t-set="absents" t-value="o.absent_lookup_function(att_ids,data['start_date'],data['end_date'])"/>
+                            <t t-if="data['log_discrepancy']['absent_lookup'] == True">
+                                <t t-set="absents" t-value="o.absent_lookup_function(att_ids,data['start_date'],data['end_date'])"/>
+                                <t t-foreach="absents" t-as="absent">
+                                    <li>
+                                        <span t-esc="absent"/><span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Absent</span>
+                                    </li>
+                                </t>
+                            </t>
+                    </ul>
+                </t>
+
+
+<!--                <div id="normal_attendance" class="row" name="total" style="float: right;">-->
+<!--                    <div t-attf-class="#{'col-4' if report_type != 'html' else 'col-sm-7 col-md-5'} ml-auto">-->
+<!--                        <table class="table table-sm" style="float: right;">-->
+<!--                            <tr class="border-black o_total">-->
+<!--                                <td><strong>Total:</strong></td>-->
+<!--                                <td class="text-right">-->
+<!--                                    <span t-esc="sum(line.normal_attendance for line in att_ids)" t-esc-options='{"widget": "float_time"}' />-->
+<!--                                </td>-->
+<!--                            </tr>-->
+<!--                            <tr>-->
+<!--                                <td><strong>Overtime 1:</strong></td>-->
+<!--                                <td class="text-right">-->
+<!--                                    <span t-esc="sum(line.OT1_attendance for line in att_ids)" t-esc-options='{"widget": "float_time"}' />-->
+<!--                                </td>-->
+<!--                            </tr>-->
+<!--                            <tr>-->
+<!--                                <td><strong>Overtime 2:</strong></td>-->
+<!--                                <td class="text-right">-->
+<!--                                    <span t-esc="sum(line.OT2_attendance for line in att_ids)" t-esc-options='{"widget": "float_time"}' />-->
+<!--                                </td>-->
+<!--                            </tr>-->
+<!--                            <t t-if="data['report_type'] == 'detailed'">-->
+<!--                                <tr>-->
+<!--                                    <td><strong>Real Late Login:</strong></td>-->
+<!--                                    <td class="text-right">-->
+<!--                                        <span t-esc="sum(line.real_morning_lateness for line in att_ids)" t-esc-options='{"widget": "float_time"}' />-->
+<!--                                    </td>-->
+<!--                                </tr>-->
+<!--                                <tr>-->
+<!--                                    <td><strong>Late Login:</strong></td>-->
+<!--                                    <td class="text-right">-->
+<!--                                        <span t-esc="sum(line.morning_lateness for line in att_ids)" t-esc-options='{"widget": "float_time"}' />-->
+<!--                                    </td>-->
+<!--                                </tr>-->
+<!--                                <tr>-->
+<!--                                    <td><strong>Real Early Logout:</strong></td>-->
+<!--                                    <td class="text-right">-->
+<!--                                        <span t-esc="sum(line.real_evening_lateness for line in att_ids)" t-esc-options='{"widget": "float_time"}' />-->
+<!--                                    </td>-->
+<!--                                </tr>-->
+<!--                                <tr>-->
+<!--                                    <td><strong>Early Logout:</strong></td>-->
+<!--                                    <td class="text-right">-->
+<!--                                        <span t-esc="sum(line.evening_lateness for line in att_ids)" t-esc-options='{"widget": "float_time"}' />-->
+<!--                                    </td>-->
+<!--                                </tr>-->
+<!--                                <tr>-->
+<!--                                    <td><strong>Real Lateness:</strong></td>-->
+<!--                                    <td class="text-right">-->
+<!--                                        <span t-esc="sum(line.real_morning_lateness for line in att_ids)+sum(line.real_evening_lateness for line in att_ids)" t-esc-options='{"widget": "float_time"}' />-->
+<!--                                    </td>-->
+<!--                                </tr>-->
+<!--                            </t>-->
+<!--                            <tr>-->
+<!--                                <td><strong>Lateness:</strong></td>-->
+<!--                                <td class="text-right">-->
+<!--                                    <span t-esc="sum(line.morning_lateness for line in att_ids)+sum(line.evening_lateness for line in att_ids)" t-esc-options='{"widget": "float_time"}' />-->
+<!--                                </td>-->
+<!--                            </tr>-->
+<!--                        </table>-->
+<!--                    </div>-->
+<!--                </div>-->
+            </div>
+            <div class="footer o_background_footer">
+            <div class="text-center">
+                <div class="text-muted">
+                    Page:
+                    <span class="page"/>
+                    of
+                    <span class="topage"/>
+                </div>
+            </div>
+        </div>
+        </div>
+
+
+</template>
+
+<template id="attendance_report_template">
+    <t t-call="web.html_container">
+        <t t-foreach="docs" t-as="o">
+            <t t-call="bi_attendance_report.attendance_report_template_document" />
+        </t>
+    </t>
+</template>
+
+</data>
+</odoo>
+

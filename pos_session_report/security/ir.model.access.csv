@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_session_report,access_pos_session,model_pos_session,,1,1,1,1
+access_session_report,access_pos_session,base.model_report_paperformat,,1,1,1,1
+access_report_zreportwizard,access_report_zreportwizard,model_report_zreportwizard,,1,1,1,1
+
+

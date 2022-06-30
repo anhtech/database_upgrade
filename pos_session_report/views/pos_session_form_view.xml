@@ -1,0 +1,45 @@
+<odoo>
+  <data>
+      <record id="zreport_form" model="ir.ui.view">
+            <field name="name">report.zreportForm</field>
+            <field name="model">report.zreportwizard</field>
+            <field name="arch" type="xml">
+				<form>
+					<group>
+                        <field name="pos_session_id" invisible="1"/>
+						<field name="selected_config_id" invisible="1"/>
+						<field name="selected_date"/>
+					</group>
+					<footer>
+					<button name="submit" string="Submit" type="object"/>
+					</footer>
+				</form>
+            </field>
+        </record>
+
+        <record id="action_zreport_wizard" model="ir.actions.act_window">
+            <field name="name">Z-Report Wizard</field>
+            <field name="res_model">report.zreportwizard</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="zreport_form"/>
+            <field name="target">new</field>
+            <field name="context">{
+                    'default_pos_session_id': active_id,
+                }
+            </field>
+        </record>
+
+        <record id="view_pos_session_form_inherited" model="ir.ui.view">
+            <field name="name">pos.session.sessionReceipt</field>
+            <field name="model">pos.session</field>
+            <field name="inherit_id" ref="point_of_sale.view_pos_session_form"/>
+            <field name="arch" type="xml">
+                <xpath expr='//button[@name="action_pos_session_validate"]' position='after'>
+<!--                    <button name="action_pos_session_report_as_receipt" type="object" string="Print X-Report (Receipt)"/>-->
+                    <button name="%(action_zreport_wizard)d" type="action" string="Print Z-Report" states="closing_control,closed" />
+                </xpath>
+            </field>
+        </record>
+  </data>
+</odoo>

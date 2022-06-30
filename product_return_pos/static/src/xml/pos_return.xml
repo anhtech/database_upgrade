@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-name="ReturnButton">
+        <div class='control-button'>
+            <i class='fa fa-shopping-cart' /> Show Orders
+        </div>
+    </t>
+
+    <t t-name="OrderLine">
+        <tr class='order-line' t-att-data-id='order.id'>
+            <t t-set="date_unformated" t-value="order.date_order"/>
+            <t t-set="date_formated" t-value='moment(date_unformated).add(3, "hours").format("YYYY-MM-DD hh:mm:ss")'/>
+            <td><t t-esc='order.pos_reference' /></td>
+            <td><t t-if="order.return_ref">
+                <t t-esc='order.return_ref' />
+            </t></td>
+            <td><t t-esc='order.partner_id[1]' /></td>
+            <td><t t-esc='order.user_id[1]' /></td>
+            <td><t t-esc='date_formated' /></td>
+            <td><span class="return-button return_order"><b>Return</b></span></td>
+            <td><span class="reprint-button reprint_order"><b>Reprint</b></span></td>
+        </tr>
+    </t>
+
+    <t t-name="OrderListScreenWidget">
+        <div class="return-screen screen">
+            <div class="screen-content">
+                <section class="top-content">
+                    <span class='button back'>
+                        <i class='fa fa-angle-double-left'></i>
+                        Cancel
+                    </span>
+                    <span class='searchbox'>
+                        <input placeholder='Search Orders by ref' />
+                        <span class='search-clear'></span>
+                    </span>
+                    <span class='searchbox'></span>
+
+                </section>
+                <section class="full-content">
+                    <div class='window'>
+                        <section class='subwindow collapsed'>
+                            <div class='subwindow-container collapsed'>
+                                <div class='subwindow-container-fix order-details-contents'>
+                                </div>
+                            </div>
+                        </section>
+                        <section class='subwindow'>
+                            <div class='subwindow-container'>
+                                <div class='subwindow-container-fix touch-scrollable scrollable-y'>
+                                    <table class='order-list'>
+                                        <thead>
+                                            <tr>
+                                                <th>Order Ref</th>
+                                                <th>Return Ref</th>
+                                                <th>Partner</th>
+                                                <th>Salesperson</th>
+                                                <th>Date</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class='order-list-contents'>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </t>
+    <t t-name="ReturnWidget">
+        <div class="modal-dialog" role="dialog">
+            <div class="popup popup-selection product_return_pos">
+                <p class="title">Return Order</p>
+                <div class='selection scrollable-y touch-scrollable'>
+                    <table id = "list" cellspacing = "1px" cellpadding = "10px" text-align = "center"
+                           width="100%" style="border:1px;padding-left:1.16cm;">
+                        <thead>
+                            <tr>
+                                <td>ID</td>
+                                <td>Price</td>
+                                <td>Name</td>
+                                <td>Qty</td>
+                                <td>Dis</td>
+                                <td>Line ID</td>
+                                <td>Returned Quantity</td>
+                            </tr>
+                        </thead>
+                        <tbody id="table-body">
+                        </tbody>
+                    </table>
+                </div>
+                <div class="footer">
+                    <div class="button confirm">
+                            Return
+                        </div>
+                    <div class="button cancel">
+                        Cancel
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+
+    <!-- Reprinting here: -->
+
+    <t t-name="ReprintReceiptScreenWidget" t-extend="ReceiptScreenWidget">
+        <t t-jquery="div.top-content" t-operation="inner">
+            <span class='button back'>
+                <i class='fa fa-angle-double-left'></i>
+                Back
+            </span>
+        </t>
+    </t>
+
+<!--    This Receipt have the correct values !!-->
+<!--    <t t-name="PosTicketReprint">-->
+<!--        <div class="pos-sale-ticket">-->
+<!--            <div class="pos-sale-ticket">-->
+<!--                <div style="width: 100%;float: center; ">-->
+<!--                        <img src='/web/binary/company_logo' height="120px" width="300px" />-->
+<!--                </div>-->
+<!--                <div style="width:100%;text-align:center;">-->
+<!--                    <strong style="font-size:14px">JAWAD EXPRESS</strong><br/>-->
+<!--                    <strong style="font-size:14px">Ph: +973 17581704</strong><br/>-->
+<!--                    <t t-if="0>receipt.total_with_tax">-->
+<!--                        <strong style="font-size:14px">Bill Type: RETURN</strong><br/>-->
+<!--                    </t>-->
+<!--                    <strong style="font-size:20px">RECEIPT</strong>-->
+<!--                </div>-->
+
+<!--&lt;!&ndash;                <div>&ndash;&gt;-->
+<!--&lt;!&ndash;                    <div style="width: 55%; float: left; padding: 20px 0px;">&ndash;&gt;-->
+<!--&lt;!&ndash;                        <t t-if="order.get_client()">&ndash;&gt;-->
+<!--&lt;!&ndash;                            Customer: <t t-esc="order.get_client().name"/><br />&ndash;&gt;-->
+<!--&lt;!&ndash;                        </t>&ndash;&gt;-->
+<!--&lt;!&ndash;                        &lt;!&ndash; Cashier: <t t-esc="widget.pos.cashier ? widget.pos.cashier.name : widget.pos.user.name"/><br />&ndash;&gt;-->
+<!--&lt;!&ndash;                         <t t-if="widget.pos.company.phone">&ndash;&gt;-->
+<!--&lt;!&ndash;                            Phone: <t t-esc="widget.pos.company.phone || ''"/><br />&ndash;&gt;-->
+<!--&lt;!&ndash;                        </t>&ndash;&gt;-->
+<!--&lt;!&ndash;                        <t t-if="widget.pos.company.x_instagram">&ndash;&gt;-->
+<!--&lt;!&ndash;                            Instagram: <t t-esc="widget.pos.company.x_instagram || ''"/><br />&ndash;&gt;-->
+<!--&lt;!&ndash;                        </t>&ndash;&gt;-->
+<!--&lt;!&ndash;                        <t t-if="widget.pos.company.x_whatsapp">&ndash;&gt;-->
+<!--&lt;!&ndash;                            Whatsapp: <t t-esc="widget.pos.company.x_whatsapp || ''"/><br />&ndash;&gt;-->
+<!--&lt;!&ndash;                        </t>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;                    </div>&ndash;&gt;-->
+<!--&lt;!&ndash;                </div>&ndash;&gt;-->
+<!--                &lt;!&ndash;<t t-if="widget.pos.company.name">-->
+<!--                    <div style="width:100%;text-align:right;"><t t-esc="widget.pos.company.name"/></div>-->
+<!--                </t>&ndash;&gt;-->
+<!--                &lt;!&ndash;<t t-if="widget.pos.company.email">-->
+<!--                    <div style="width:100%;text-align:right;"><t t-esc="widget.pos.company.email"/></div>-->
+<!--                </t>&ndash;&gt;-->
+<!--                <br/>-->
+<!--                <span style="float:right;">-->
+<!--                    Cashier: <t t-esc="widget.pos.get_cashier().name"/>-->
+<!--                </span>-->
+<!--                <span style="float:left; font-weight:bold;">-->
+<!--                    <t style="float:right; text-align:right;" t-esc="moment().format('LT')"/>-->
+<!--                </span>​-->
+<!--                <br/>-->
+<!--                <span style="float:right;">-->
+<!--                    <t t-esc="receipt.name"/>-->
+<!--                </span>-->
+<!--                <span style="float:left; font-weight:bold;">-->
+<!--                    <t t-esc="moment().format('L')"/>-->
+<!--                </span>​-->
+<!--                <br />-->
+<!--                <t t-if="receipt.header">-->
+<!--                    <div style='text-align:center'>-->
+<!--                        <t t-if="widget.pos.company.vat"><t t-esc="widget.pos.company.vat"/></t><br/>-->
+<!--                        <t t-if="widget.pos.company.vat"><t>VAT </t></t><t>INVOICE</t>-->
+<!--                    </div>-->
+<!--                    <br/>-->
+<!--                </t>-->
+<!--                <table class='receipt-orderlines'>-->
+<!--                    <colgroup>-->
+<!--                        <col width='40%' />-->
+<!--                        <col width='15%' />-->
+<!--                        <col width='15%' />-->
+<!--                        <col width='30%' />-->
+<!--                    </colgroup>-->
+<!--                    <tr style="border: 1px solid rgb(0, 0, 0);">-->
+<!--                        <th>Description</th>-->
+<!--                        <th>Qty</th>-->
+<!--                        <th>Value</th>-->
+<!--                        <th style='text-align:right'>Value</th>-->
+<!--                    </tr>-->
+<!--                    <tr t-foreach="orderlines" t-as="orderline">-->
+<!--                        <td>-->
+<!--                            <t t-esc="orderline.get_product().display_name"/>-->
+<!--                             <t t-if="orderline.get_discount() > 0">-->
+<!--                                <div class="pos-disc-font">-->
+<!--                                    With a <t t-esc="orderline.get_discount()"/>% discount-->
+<!--                                </div>-->
+<!--                            </t>-->
+<!--                        </td>-->
+<!--                        <td>-->
+<!--                            <t t-esc="orderline.get_quantity_str_with_unit()"/>-->
+<!--                        </td>-->
+<!--                        <td>-->
+<!--                            <t t-set="a" t-value="orderline.quantityStr"></t>-->
+<!--                            <t t-set="b" t-value="orderline.get_display_price()"></t>-->
+<!--                            <t t-set="c" t-value="b/a"></t>-->
+<!--                            <t t-esc="widget.format_currency(c)"/>-->
+<!--                        </td>-->
+<!--                        <td style='text-align:right'>-->
+<!--                            <t t-esc="widget.format_currency(orderline.get_display_price())"/>-->
+<!--                        </td>-->
+<!--                    </tr>-->
+<!--                </table>-->
+<!--                <br />-->
+<!--                <table class='receipt-total'>-->
+<!--                    <colgroup>-->
+<!--                        <col width='40%' />-->
+<!--                        <col width='30%' />-->
+<!--                        <col width='30%' />-->
+<!--                    </colgroup>-->
+<!--                    <tr>-->
+<!--                        <td></td>-->
+<!--                        <td>Subtotal:</td>-->
+<!--                        <td style='text-align:right'>-->
+<!--                            <t t-esc="widget.format_currency(receipt.total_without_tax)"/>-->
+<!--                        </td>-->
+<!--                    </tr>-->
+<!--                    <t t-foreach="receipt.tax_details" t-as="taxdetail">-->
+<!--                        <tr>-->
+<!--                            <td></td>-->
+<!--                            <td><t t-esc="taxdetail.name" /></td>-->
+<!--                            <td style='text-align:right'>-->
+<!--                                <t t-esc="widget.format_currency(taxdetail.amount)"/>-->
+<!--                            </td>-->
+<!--                        </tr>-->
+<!--                    </t>-->
+<!--                    <t t-if="receipt.total_discount>0">-->
+<!--                        <tr>-->
+<!--                            <td></td>-->
+<!--                            <td>Discount:</td>-->
+<!--                            <td style='text-align:right'>-->
+<!--                                <t t-esc="widget.format_currency(receipt.total_discount)"/>-->
+<!--                            </td>-->
+<!--                        </tr>-->
+<!--                    </t>-->
+<!--                    <tr>-->
+<!--                        <td></td>-->
+<!--                        <td>Total:</td>-->
+<!--                        <td style='text-align:right'>-->
+<!--                            <t t-esc="widget.format_currency(receipt.total_with_tax)"/>-->
+<!--                        </td>-->
+<!--                    </tr>-->
+<!--                    <tr>-->
+<!--                        <td></td>-->
+<!--                        <td>Change:</td>-->
+<!--                        <td style='text-align:right'>-->
+<!--                            <t t-esc="widget.format_currency(receipt.change)"/>-->
+<!--                        </td>-->
+<!--                    </tr>-->
+<!--                </table>-->
+<!--                <br/>-->
+<!--                <table class='receipt-paymentlines'>-->
+<!--                    <colgroup>-->
+<!--                        <col width='38%' />-->
+<!--                        <col width='20%' />-->
+<!--                        <col width='13%' />-->
+<!--                        <col width='29%' />-->
+<!--                    </colgroup>-->
+<!--                    <t t-foreach="paymentlines" t-as="line">-->
+<!--                      <tr>-->
+<!--                          <td>-->
+<!--                              <t t-esc="line.name"/>-->
+<!--                          </td>-->
+<!--                          <td>-->
+<!--                          </td>-->
+<!--                          <td>-->
+<!--                          </td>-->
+<!--                          <td style='text-align:right'>-->
+<!--                              <t t-esc="widget.format_currency(line.get_amount())"/>-->
+<!--                          </td>-->
+<!--                      </tr>-->
+<!--                    </t>-->
+<!--                </table>-->
+<!--                <br/>-->
+<!--                &lt;!&ndash;<table class='receipt-change'>-->
+<!--                    <colgroup>-->
+<!--                        <col width='40%' />-->
+<!--                        <col width='15%' />-->
+<!--                        <col width='15%' />-->
+<!--                        <col width='30%' />-->
+<!--                    </colgroup>-->
+<!--                    <tr><td>Change:</td>-->
+<!--                         <td>-->
+<!--                          </td>-->
+<!--                          <td>-->
+<!--                          </td>-->
+<!--                        <td style='text-align:right'>-->
+<!--                        <t t-esc="widget.format_currency(order.get_change())"/>-->
+<!--                        </td></tr>-->
+<!--                </table>&ndash;&gt;-->
+<!--                    <t t-if="0>receipt.total_with_tax">-->
+<!--                        <span style="font-size:14px">Customer Name: .....................</span><br/>-->
+<!--                        <span style="font-size:14px">Phone No: .....................</span><br/>-->
+<!--                        <span style="font-size:14px">Signature: .....................</span><br/>-->
+<!--                    </t>-->
+<!--                <br/>-->
+<!--                <div style='text-align:center; border-width:1px; border-top-style:solid;'>-->
+<!--                    <t>Thank you for shopping at</t><br/>-->
+<!--                    <strong>JAWAD EXPRESS</strong><br/>-->
+<!--                </div>-->
+<!--                <div style='text-align:center; border-width:1px; border-top-style:dashed; border-bottom-style:dashed;'>-->
+<!--                    <t>For any feedback please email us at</t><br/>-->
+<!--                    <strong>feedback@jawad.com</strong><br/>-->
+<!--                </div>-->
+<!--                <t t-if="receipt.footer">-->
+<!--                    <div style='text-align:center;'>-->
+<!--                        <t t-esc="receipt.footer"/><br/>-->
+<!--                    </div>-->
+<!--                    <br/>-->
+<!--                </t>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </t>-->
+
+
+
+
+
+</templates>

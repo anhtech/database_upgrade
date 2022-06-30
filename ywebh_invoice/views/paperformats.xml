@@ -1,0 +1,16 @@
+ <odoo>
+    <data>
+        <report
+            id="account_invoices"
+            model="account.invoice"
+            string="Invoice (Ywe)"
+            report_type="qweb-pdf"
+            name="ywebh_invoice.report_invoice_ywe"
+            file="ywebh_invoice.report_invoice_ywe"
+            attachment="(object.state in ('open','in_payment','paid')) and ('INV'+(object.number or '').replace('/','')+'.pdf')"
+            print_report_name="(object._get_report_base_filename())"
+            groups="account.group_account_invoice"
+            paperformat="ywebh_quotation.quotation_A4"
+        />
+    </data>
+ </odoo>

@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="point_of_sale.template" xml:space="preserve">
+
+    <t t-name="CouponButton">
+        <div class='control-button'>
+            <i class='fa fa-tag' /> Enter a Coupon
+        </div>
+    </t>
+
+	<t t-extend="ActionpadWidget">
+        <t t-jquery='button[class*="button pay"]' t-operation="replace">
+            <button t-attf-class='button set-salesperson #{ ( widget.pos.get_salesperson() and widget.pos.get_salesperson().name.length > 10) ? "decentered" : "" }' >
+                <i class='fa fa-user' role="img" aria-label="Salesperson" title="Salesperson"/>
+                <t t-if="widget.pos.get_salesperson()">
+                    <t t-esc="widget.pos.get_salesperson().name" />
+                </t>
+                <t t-if="!widget.pos.get_salesperson()">
+                    Salesperson
+                </t>
+            </button>
+            <button class='button pay' style="height: 108px !important;">
+                <div class='pay-circle'>
+                    <i class='fa fa-chevron-right' role="img" aria-label="Pay" title="Pay"/>
+                </div>
+                Payment
+            </button>
+		</t>
+	</t>
+
+    <t t-name="CouponScreenWidget">
+        <div role="dialog" class="modal-dialog">
+            <div class="popup popup-text">
+                <header class="title">Coupon</header>
+                <br/>
+                <br/>
+                <main class='main-page'>
+                    <b/><b/>
+                    <input type="text" t-att-autofocus="autofocus" class="popup-input discount-line-input" placeholder="Enter coupon code"/>
+                </main>
+                <div class="error-message wrong-value">
+                    <center><div class="discount-warning">You have entered a wrong coupon code!</div></center>
+                </div>
+                <div class="error-message empty-value">
+                    <center><div class="discount-warning">You can not confirm with an empty coupon!</div></center>
+                </div>
+                <div class="error-message empty-orderline">
+                    <center><div class="discount-warning">You can not apply a coupon on an empty order!</div></center>
+                </div>
+                <div class="error-message not-valid">
+                    <center><div class="discount-warning">You can not use this coupon anymore!</div></center>
+                </div>
+                <div class="error-message already-applied">
+                    <center><div class="discount-warning">A coupon is already applied to the order!</div></center>
+                </div>
+                <footer class="footer">
+                    <div class="button confirm">
+                        Confirm
+                    </div>
+                    <div class="button cancel">
+                        Cancel
+                    </div>
+                </footer>
+            </div>
+        </div>
+    </t>
+
+    <t t-name="SalespersonLine">
+        <tr class='salesperson-line' t-att-data-id='salesperson.id'>
+            <td><t t-esc='salesperson.name' /></td>
+<!--            <td><t t-esc='salesperson.address' /></td>-->
+        </tr>
+    </t>
+
+    <t t-name="SalespersonListScreenWidget">
+        <div class="salespersonlist-screen screen">
+            <div class="screen-content">
+                <section class="top-content">
+                    <span class='button back'>
+                        <i class='fa fa-angle-double-left'></i>
+                        Cancel
+                    </span>
+                    <span class='searchbox'>
+                        <input placeholder='Search Salesperson'/>
+                        <span class='search-clear'></span>
+                    </span>
+                    <span class='searchbox'></span>
+                    <span class='button next oe_hidden highlight'>
+                        Select Salesperson
+                        <i class='fa fa-angle-double-right'></i>
+                    </span>
+                </section>
+                <section class="full-content">
+                    <div class='window'>
+                        <section class='subwindow collapsed'/>
+                        <section class='subwindow'>
+                            <div class='subwindow-container'>
+                                <div class='subwindow-container-fix touch-scrollable scrollable-y'>
+                                    <table class='salesperson-list'>
+                                        <thead>
+                                            <tr>
+                                                <th>Name</th>
+<!--                                                <th>Address</th>-->
+                                            </tr>
+                                        </thead>
+                                        <tbody class='salesperson-list-contents'>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </t>
+
+
+</templates>

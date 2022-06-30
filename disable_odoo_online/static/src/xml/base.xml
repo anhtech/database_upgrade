@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates>
+    <t t-extend="UserMenu.Actions">
+        <t
+            t-jquery="a[data-menu='account'], a[data-menu='documentation'], a[data-menu='support']"
+        >
+            this.remove();
+        </t>
+    </t>
+
+    <t t-extend="WebClient.database_expiration_panel">
+        <t t-jquery=".database_expiration_panel" t-operation='replace'>
+            <t t-if="diffDays != 30">
+                <div class="database_expiration_panel" id="announcement_bar_table">
+                    <div t-attf-class="alert alert-#{diffDays&lt;6?'danger':(diffDays&lt;16?'warning':'info')}" role="alert">
+                        <a href="#" class="oe_instance_hide_panel float-right" t-translation="off" aria-label="Dismiss">&amp;times;</a>
+                        <span>
+                            <span class="oe_instance_expires"></span>
+                            <span class="oe_instance_register">
+                                <t t-if="!has_mail">
+                                    You will be able to register your database once you have installed your first app.
+                                </t>
+                                <t t-if="has_mail">
+                                    <t t-if="diffDays == 30">
+                                        <t t-set="delay">1 month</t>
+                                    </t>
+                                    <t t-if="diffDays != 30">
+                                        <t t-set="delay"><t t-esc="diffDays"/> days</t>
+                                    </t>
+                                    <t t-if="diffDays &gt; 0">
+                                        <t t-if="dbexpiration_reason == 'demo'">
+                                            This demo database will expire in <span t-esc="delay"/>.
+                                        </t>
+                                        <t t-if="dbexpiration_reason != 'demo'">
+                                            <t t-if="diffDays != 30">
+                                                This database will expire in <span t-esc="delay"/>.
+                                            </t>
+                                        </t>
+                                    </t>
+                                    <t t-if="diffDays &lt; 1">
+                                        This database has expired.
+                                    </t>
+                                    <!-- only show corrective actions to an admin (group_system) -->
+                                    <t t-if="warning=='admin'">
+                                        <t t-if="dbexpiration_reason == 'trial' or dbexpiration_reason == 'demo' or dbexpiration_reason === false">
+                                            <t t-if="diffDays != 30">
+                                                <a class="oe_instance_register_show" href="#">Register your subscription</a> or <a class="oe_instance_buy" href="#">buy a subscription</a>.
+                                            </t>
+                                        </t>
+                                        <t t-if="dbexpiration_reason == 'renewal'">
+                                            <t t-if="diffDays != 30">
+                                                <a class="oe_instance_renew" href="#">Renew your subscription</a>
+                                                <a class="check_enterprise_status" href="#" title="Refresh subscription status" aria-label="Refresh subscription status"><i class="fa fa-refresh"></i></a>
+                                            </t>
+                                        </t>
+                                        <t t-if="dbexpiration_reason == 'upsell'">
+                                            <t t-if="diffDays != 30">
+                                                You have more users or more apps installed than your subscription allows.<br/>
+                                                <a class="oe_instance_upsell" href="#">Upgrade your subscription</a>
+                                                <a class="check_enterprise_status" href="#" title="Refresh subscription status" aria-label="Refresh subscription status"><i class="fa fa-refresh"></i></a>
+                                            </t>
+                                        </t>
+                                    </t>
+                                    <t t-if="warning=='user'">
+                                        <t t-if="diffDays != 30">
+                                            Log in as an administrator to correct the issue.
+                                        </t>
+                                    </t>
+                                </t>
+                            </span>
+                        </span>
+                        <span class="oe_instance_register oe_instance_success">
+                            Thank you, your registration was successful! Your database is valid until <span class="valid_date"/>.
+                        </span>
+                        <span class="oe_instance_register oe_subscription_updated">
+                            Your subscription was updated and is valid until <span class="valid_date"/>.
+                        </span>
+                        <span class="oe_instance_register oe_instance_error">
+                          Something went wrong while registering your database. You can try again or contact <a href="https://www.odoo.com/help" target="_blank">Odoo Help</a>.
+                        </span>
+                        <span class="oe_instance_register oe_database_already_linked">
+                          Your subscription is already linked to a database.<br/>
+                          To unlink it you can either:<br/>
+                          - Login to your Odoo.com dashboard then unlink your previous database: <a class="oe_contract_link"/><br/>
+                        <span class="oe_contract_email_block">
+                          - <a href="#" class="oe_contract_send_mail">Click here to send an email</a> to the subscription owner (email: <strong class="oe_contract_email" />) with the instructions to follow
+                          <p class="oe_contract_sending_mail">Sending the instructions by email ...</p>
+                          <p class="oe_contract_sending_mail_success">The instructions to unlink your subscription from the previous database(s) have been sent</p>
+                          <p class="oe_contract_sending_mail_fail">Unable to send the instructions by email, please contact the <a href="www.odoo.com/help">Odoo Support</a><br/>
+                            Error reason: <span class="oe_contract_sending_mail_fail_reason"/>
+                          </p>
+                        </span>
+                        <span class="oe_contract_no_email_block">
+                          - Contact your sales representative to help you to unlink your previous database
+                        </span>
+                        </span>
+                        <div class="oe_instance_register oe_instance_register_form">
+                            <form class="form-inline justify-content-center mt-4">
+                                <div class="form-group">
+                                    <label for="enterprise_code">Subscription Code: </label>
+                                    <input type="text" class="form-control mx-2" id="enterprise_code"
+                                           placeholder="Paste code here"
+                                           title="Your subscription code"/>
+                                </div>
+                                <button class="btn btn-primary" id="confirm_enterprise_code">Register</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </t>
+    </t>
+</templates>

@@ -1,0 +1,32 @@
+ <odoo>
+    <data>
+        <record id="invoice_A4_letterhead" model="report.paperformat">
+            <field name="name">Invoice Letterhead A4</field>
+            <field name="default" eval="True" />
+            <field name="format">A4</field>
+            <field name="page_height">0</field>
+            <field name="page_width">0</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">80</field>
+            <field name="margin_bottom">35</field>
+            <field name="margin_left">12</field>
+            <field name="margin_right">12</field>
+            <field name="header_line" eval="False" />
+            <field name="header_spacing">50</field>
+            <field name="dpi">90</field>
+        </record>
+
+        <report
+            id="account_invoices_letterhead"
+            model="account.invoice"
+            string="Invoice Letterhead (Ywe)"
+            report_type="qweb-pdf"
+            name="ywebh_invoice_letterhead.report_invoice_letterhead_ywe"
+            file="ywebh_invoice_letterhead.report_invoice_letterhead_ywe"
+            attachment="(object.state in ('open','in_payment','paid')) and ('INV'+(object.number or '').replace('/','')+'.pdf')"
+            print_report_name="(object._get_report_base_filename())"
+            groups="account.group_account_invoice"
+            paperformat="ywebh_invoice_letterhead.invoice_A4_letterhead"
+        />
+    </data>
+ </odoo>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	  <record id="action_server_send_sms" model="ir.actions.server">
+		  <field name="name">Send Whatsapp</field>
+		  <field name="model_id" ref="model_res_partner"/>
+		  <field name="binding_model_id" ref="model_res_partner"/>
+		  <field name="state">code</field>
+		  <field name="code">records.sendWhatsappMessage()</field>
+	  </record>
+</odoo>

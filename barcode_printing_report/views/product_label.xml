@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="product.report_simple_barcode">
+            <div style="width: 100%; display: inline-table; margin-left: -30px; margin-top: -10px; margin-bottom: -80px;">
+                <table class="table" border="0">
+                    <tr style="border: none;">
+                        <td class="text-center align-middle" style="width: 158px; border: none;">
+                            <t t-if="product.barcode">
+                                <div style="font-size:8px;" t-field="product.name"/>
+                                <img alt="Barcode" t-if="len(product.barcode) == 13" t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('EAN13', product.barcode, 600, 150)" style="width:168px;height:3.85rem;"/>
+                                <img alt="Barcode" t-elif="len(product.barcode) == 8" t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('EAN8', product.barcode, 600, 150)" style="width:168px;height:3.85rem;"/>
+                                <img alt="Barcode" t-else="" t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('Code128', product.barcode, 600, 150)" style="width:168px;height:3.85rem"/>
+                                <div style="font-size:10px; margin-bottom: -8px;" t-field="product.name"/>
+                                <strong style="font-size:12px;" t-field="product.lst_price" t-options="{'widget': 'monetary', 'display_currency': product.company_id.currency_id}"/>
+                            </t>
+                            <t t-else=""><span class="text-muted" style="width:168px;height:3.85rem">No barcode available</span></t>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <p style="page-break-after:always;"/>
+        </template>
+
+        <template id="product.report_productbarcode">
+            <t t-call="web.html_container">
+                <div class="page">
+                    <t t-foreach="docs" t-as="product">
+                        <t t-call="product.report_simple_barcode">
+                            <t t-set="product" t-value="product"/>
+                        </t>
+                    </t>
+                </div>
+            </t>
+        </template>
+
+        <record id="paperformat_product_barcode" model="report.paperformat">
+            <field name="name">Product Barcode (MODIFIED)</field>
+<!--            <field name="default" eval="True" />-->
+            <field name="format">custom</field>
+            <field name="page_height">25</field>
+            <field name="page_width">42</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">1</field>
+            <field name="margin_bottom">1</field>
+            <field name="margin_left">1</field>
+            <field name="margin_right">1</field>
+            <field name="header_line" eval="False" />
+            <field name="header_spacing">0</field>
+            <field name="dpi">90</field>
+        </record>
+
+        <report
+            id="product.report_product_product_barcode"
+            string="Product Barcode (PDF)"
+            model="product.product"
+            report_type="qweb-pdf"
+            name="product.report_productbarcode"
+            file="product.report_productbarcode"
+            paperformat="barcode_printing_report.paperformat_product_barcode"
+            print_report_name="'Products barcode - %s' % (object.name)"
+        />
+
+        <report
+            id="product.report_product_template_barcode"
+            string="Product Barcode (PDF)"
+            model="product.template"
+            report_type="qweb-pdf"
+            name="product.report_producttemplatebarcode"
+            file="product.report_producttemplatebarcode"
+            paperformat="barcode_printing_report.paperformat_product_barcode"
+            print_report_name="'Products barcode - %s' % (object.name)"
+        />
+    </data>
+</odoo>

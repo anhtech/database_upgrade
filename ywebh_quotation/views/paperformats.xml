@@ -1,0 +1,42 @@
+ <odoo>
+    <data>
+        <record id="quotation_A4" model="report.paperformat">
+            <field name="name">Quotation A4</field>
+            <field name="default" eval="True" />
+            <field name="format">A4</field>
+            <field name="page_height">0</field>
+            <field name="page_width">0</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">70</field>
+            <field name="margin_bottom">45</field>
+            <field name="margin_left">12</field>
+            <field name="margin_right">12</field>
+            <field name="header_line" eval="False" />
+            <field name="header_spacing">50</field>
+            <field name="dpi">90</field>
+        </record>
+
+        <report
+            id="sale.action_report_saleorder"
+            string="Quotation / Order (Ywe)"
+            model="sale.order"
+            report_type="qweb-pdf"
+            file="sale.report_saleorder"
+            name="sale.report_saleorder"
+            paperformat="ywebh_quotation.quotation_A4"
+            print_report_name="(object.state in ('draft', 'sent') and 'Quotation - %s' % (object.name)) or 'Order - %s' % (object.name)"
+        />
+
+        <report
+            id="action_report_saleorder_description"
+            string="Quotation / Order (Ywe - Description Only)"
+            model="sale.order"
+            report_type="qweb-pdf"
+            file="ywebh_quotation.report_saleorder_description"
+            name="ywebh_quotation.report_saleorder_description"
+            paperformat="ywebh_quotation.quotation_A4"
+            print_report_name="(object.state in ('draft', 'sent') and 'Quotation - %s' % (object.name)) or 'Order - %s' % (object.name)"
+        />
+
+    </data>
+ </odoo>

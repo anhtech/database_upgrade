@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data>
+<template id="action_group_report_template_in">
+    <t t-if="not o and doc">
+        <t t-set="o" t-value="doc"/>
+    </t>
+
+    <t t-if="o and 'company_id' in o">
+        <t t-set="company" t-value="o.company_id.sudo()"/>
+    </t>
+    <t t-if="not o or not 'company_id' in o">
+        <t t-set="company" t-value="res_company"/>
+    </t>
+
+    <div class="article o_report_layout_background">
+
+        <div class="page">
+            <div class="row">
+                <div class="col-3">
+                    <img t-if="company.logo" t-att-src="'data:image/png;base64,%s' % to_text(company.logo)" height="54" width="180"/>
+                </div>
+                <div class="col-6" name="company_address"><center>
+                    <ul class="list-unstyled">
+                        <li t-if="company.name"><span t-field="company.name"/></li>
+                        <li>Group Attendance Report (<span t-esc="data['report_type']"/>)</li>
+                        <li>From: <span t-esc="data['start_date']"/>  To:  <span t-esc="data['end_date']"/></li>
+                    </ul>
+                </center></div>
+                <div class="col-3" name="company_address">
+                    <ul class="list-unstyled">
+                        <li style="text-align: right;">Date: <span t-esc="data['printing_date']"/></li>
+                        <li style="text-align: right;">Time: <span t-esc="data['printing_time']"/></li>
+                    </ul>
+                </div>
+            </div>
+<!--            <table  style="border: 1px solid black;" width="100%">-->
+<!--                 <thead>-->
+<!--                        <tr style="border: 1px solid black;">-->
+<!--                            <th style="border: 1px solid black;" width="20%">Department-ID</th>-->
+<!--                            <th style="border: 1px solid black;" width="80%">Department Name</th>-->
+<!--                        </tr>-->
+<!--                 </thead>-->
+<!--                <tr style="border: 1px solid black;">-->
+<!--                    <td style="border: 1px solid black;"><span t-esc="o.id"/></td>-->
+<!--                    <td style="border: 1px solid black;"><span t-field="o.name"/></td>-->
+<!--                </tr>-->
+<!--            </table><br/>-->
+            <div class="row">
+                <table class="table table-condensed">
+                    <thead>
+                <tr>
+                    <th class="text-left" width="20%">Employee</th>
+                    <th class="text-center">Normal Attendance</th>
+                    <th class="text-center">Overtime 1</th>
+                    <th class="text-center">Overtime 2</th>
+                    <th class="text-right">Lateness</th>
+                    </tr>
+                    </thead>
+                    <t t-foreach="real_data" t-as="main">
+                        <tr>
+                            <td class="text-left"><span t-esc="main['employee_id']"/></td>
+                            <td class="text-center"><span t-esc="main['normalAttendanceTotal']" t-options='{"widget": "float_time"}'/></td>
+                            <td class="text-center"><span t-esc="main['OT1_Total']" t-options='{"widget": "float_time"}' /></td>
+                            <td class="text-center"><span t-esc="main['OT2_Total']" t-options='{"widget": "float_time"}' /></td>
+                            <td class="text-right"><span t-esc="main['latenessTotal']" t-options='{"widget": "float_time"}' /></td>
+                        </tr>
+                    </t>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="footer o_background_footer">
+        <div class="text-center">
+            <div class="text-muted">
+                Page:
+                <span class="page"/>
+                of
+                <span class="topage"/>
+            </div>
+        </div>
+    </div>
+</template>
+
+<template id="action_group_report_template">
+    <t t-call="web.html_container">
+<!--        <t t-foreach="docs" t-as="o">-->
+            <t t-call="bi_attendance_report.action_group_report_template_in" />
+<!--        </t>-->
+    </t>
+</template>
+
+</data>
+</odoo>
+

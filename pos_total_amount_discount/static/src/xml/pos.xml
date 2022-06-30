@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="point_of_sale.template" xml:space="preserve">
+
+<!--    <t t-extend="Product">-->
+<!--        <t t-jquery='div[class*="product-name"]' t-operation="replace">-->
+<!--            <div class="product-name" t-attf-id="article_product_#{product.id}">-->
+<!--                <t t-if="product.display_name.length>45">-->
+<!--                    <t t-esc="product.display_name.substring(45, 0)"/>...-->
+<!--                </t>-->
+<!--                <t t-else="">-->
+<!--                    <t t-esc="product.display_name"/>-->
+<!--                </t>-->
+<!--            </div>-->
+<!--        </t>-->
+<!--    </t>-->
+
+	<t t-extend="ActionpadWidget">
+		<t t-jquery=".actionpad" t-operation="before">
+			<span class="control-button" id="discount_amount" style="width: 384px;margin-right: 5px;margin-top: 3px;margin-bottom: -7px;">
+                <i class="fa fa-money"/>
+				Discount Amount
+			</span>
+		</t>
+	</t>
+
+    <t t-name="DiscountScreenWidget">
+        <div role="dialog" class="modal-dialog">
+            <div class="popup popup-text">
+                <header class="title">Discount on Total Amount</header>
+                <main class='main-page'>
+                    <b/><b/>
+                    <input type="text" t-att-value="0" t-att-autofocus="autofocus" class="popup-input discount-line-input" placeholder="Enter discount amount"/>
+                </main>
+                <div class="error-message wrong-value">
+                    <center><div class="discount-warning">You have entered unknown value!</div></center>
+                </div>
+                <div class="error-message empty-value">
+                    <center><div class="discount-warning">You can not confirm an empty discount!</div></center>
+                </div>
+                <div class="error-message negative-value">
+                    <center><div class="discount-warning">The discount value should be greater than zero!</div></center>
+                </div>
+                <footer class="footer">
+                    <div class="button confirm">
+                        Confirm
+                    </div>
+                    <div class="button cancel">
+                        Cancel
+                    </div>
+                </footer>
+            </div>
+        </div>
+    </t>
+
+
+</templates>

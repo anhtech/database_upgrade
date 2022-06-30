@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="point_of_sale.template" xml:space="preserve">
+
+	<t t-name="CouponButton">
+		<input type="text" class="ushkwebsite-ref-input" placeholder="USHK-##"/>
+    </t>
+
+	<t t-extend="PaymentScreenWidget">
+        <t t-jquery='div[class*="payment-buttons"]' t-operation="after">
+            <input type="text" class="ushkwebsite-ref-input" placeholder="USHK-##"/>
+		</t>
+	</t>
+
+</templates>

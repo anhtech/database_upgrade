@@ -1,0 +1,14 @@
+<odoo>
+  <data>
+    <record id="view_pos_pos_form_ushk_website" model="ir.ui.view">
+        <field name="name">pos.order.form</field>
+        <field name="model">pos.order</field>
+        <field name="inherit_id" ref="point_of_sale.view_pos_pos_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='invoice_group']" position="after">
+                <field name="ushk_ref"/>
+            </xpath>
+        </field>
+    </record>
+  </data>
+</odoo>

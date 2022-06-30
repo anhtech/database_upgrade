@@ -1,0 +1,38 @@
+<odoo>
+  <data>
+
+      <record model="ir.ui.view" id="search_pos_coupon_used">
+          <field name="name">Used Coupons Filter</field>
+          <field name="model">pos.coupon.used</field>
+          <field name="arch" type="xml">
+              <search string="Used Coupons Filter">
+                  <field name="coupon_id"/>
+                  <field name="used_datetime"/>
+                  <field name="salesperson_id"/>
+                  <field name="pos_order_id"/>
+                  <group expand="0" string="Group By">
+                      <filter name="group_by_salesperson" string="Group by Salesperson" domain="[]" context="{'group_by': 'salesperson_id'}"/>
+                      <filter name="group_by_coupon" string="Group by Coupon" domain="[]" context="{'group_by': 'coupon_id'}"/>
+                  </group>
+              </search>
+          </field>
+      </record>
+
+      <record id="pos_coupon_used_tree" model="ir.ui.view">
+          <field name="name">pos.coupon.used.tree</field>
+          <field name="model">pos.coupon.used</field>
+          <field name="arch" type="xml">
+              <tree delete="false" create="false">
+                  <field name="currency_id" invisible="1"/>
+                  <field name="coupon_id"/>
+                  <field name="used_datetime"/>
+                  <field name="salesperson_id"/>
+                  <field name="pos_order_id" />
+                  <field name="amount_total" sum="Total Amount"/>
+                  <field name="commission_amount" sum="Commission Amount"/>
+              </tree>
+          </field>
+      </record>
+
+  </data>
+</odoo>

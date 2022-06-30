@@ -1,0 +1,242 @@
+<odoo>
+    <data>
+		<template id="cust_quotation_report" inherit_id="sale.report_saleorder_document">
+			<xpath expr="//t[@t-call='web.external_layout']" position="replace">
+				<t t-set="doc" t-value="doc.with_context(lang=lang)" />
+				<t t-set="address">
+					<address t-field="doc.partner_id" t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": True}' />
+					<div t-if="doc.partner_id.vat" class="mt16"><t t-esc="doc.company_id.country_id.vat_label or 'Tax ID'"/>: <span t-field="doc.partner_id.vat"/></div>
+				</t>
+
+				<t t-if="not o" t-set="o" t-value="doc"/>
+
+				<t t-if="not company">
+					<!-- Multicompany -->
+					<t t-if="company_id">
+						<t t-set="company" t-value="company_id"/>
+					</t>
+					<t t-elif="o and 'company_id' in o">
+						<t t-set="company" t-value="doc.company_id.sudo()"/>
+					</t>
+					<t t-else="else">
+						<t t-set="company" t-value="res_company"/>
+					</t>
+				</t>
+
+				<div class="article" t-att-data-oe-model="o and doc._name" t-att-data-oe-id="o and doc.id" t-att-data-oe-lang="o and doc.env.context.get('lang')">
+
+					<div class="page">
+						<link href='http://fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' type='text/css'/>
+						<img src="/ywebh_reports/static/src/img/first_page.png" style="position: fixed; left: 0; top: 0; height: 371mm; width: 264mm;">
+							<p style="position:absolute;top:138px;left:511px;white-space:nowrap; font-size:15px;font-family: 'Lato', sans-serif;color:#231f20;"><b>W</b></p>
+							<p style="position:absolute;top:138px;left:548px;white-space:nowrap; font-size:15px;font-family: 'Lato', sans-serif;color:#231f20;" class="ft10"><b>E</b></p>
+							<p style="position:absolute;top:138px;left:611px;white-space:nowrap; font-size:15px;font-family: 'Lato', sans-serif;color:#231f20;" class="ft10"><b>C</b></p>
+							<p style="position:absolute;top:138px;left:646px;white-space:nowrap; font-size:15px;font-family: 'Lato', sans-serif;color:#231f20;" class="ft10"><b>R</b></p>
+							<p style="position:absolute;top:138px;left:681px;white-space:nowrap; font-size:15px;font-family: 'Lato', sans-serif;color:#231f20;" class="ft10"><b>E</b></p>
+							<p style="position:absolute;top:138px;left:716px;white-space:nowrap; font-size:15px;font-family: 'Lato', sans-serif;color:#231f20;" class="ft10"><b>A</b></p>
+							<p style="position:absolute;top:138px;left:751px;white-space:nowrap; font-size:15px;font-family: 'Lato', sans-serif;color:#231f20;" class="ft10"><b>T</b></p>
+							<p style="position:absolute;top:138px;left:786px;white-space:nowrap; font-size:15px;font-family: 'Lato', sans-serif;color:#231f20;" class="ft10"><b>E</b></p>
+							<p style="position:absolute;top:138px;left:846px;white-space:nowrap; font-size:15px;font-family: 'Lato', sans-serif;color:#231f20;" class="ft10"><b>A</b></p>
+							<p style="position:absolute;top:138px;left:881px;white-space:nowrap; font-size:15px;font-family: 'Lato', sans-serif;color:#231f20;" class="ft10"><b>R</b></p>
+							<p style="position:absolute;top:138px;left:916px;white-space:nowrap; font-size:15px;font-family: 'Lato', sans-serif;color:#231f20;" class="ft10"><b>T</b></p>
+							<p style="position:absolute;top:611px;left:161px;white-space:nowrap; font-size:78px;font-family: 'Lato', sans-serif;color:#231f20;" class="ft11"><b>WE HAVE PASSION</b></p>
+							<p style="position:absolute;top:719px;left:161px;white-space:nowrap; font-size:88px;font-family: 'Lato', sans-serif;color:#231f20;" class="ft13"><b>WE MAKE IT</b></p>
+							<p style="position:absolute;top:810px;left:161px;white-space:nowrap; font-size:88px;font-family: 'Lato', sans-serif;color:#231f20;" class="ft13"><b>POSSIBLE</b></p>
+							<p style="position:absolute;top:925px;left:161px;white-space:nowrap; font-size:46px;font-family: 'Lato', sans-serif;color:#ffffff;" class="ft12"><b>WE LOVE WHAT WE DO</b></p>
+							<p style="position:absolute;top:1280px;left:174px;white-space:nowrap; font-size:15px;font-family: 'Lato', sans-serif;color:#231f20;" class="ft10"><b>A</b></p>
+							<p style="position:absolute;top:1280px;left:201px;white-space:nowrap; font-size:15px;font-family: 'Lato', sans-serif;color:#231f20;" class="ft10"><b>R</b></p>
+							<p style="position:absolute;top:1280px;left:227px;white-space:nowrap; font-size:15px;font-family: 'Lato', sans-serif;color:#231f20;" class="ft10"><b>T</b></p>
+							<p style="position:absolute;top:1280px;left:305px;white-space:nowrap; font-size:15px;font-family: 'Lato', sans-serif;color:#231f20;" class="ft10"><b>ywebh</b></p>
+						</img>
+
+					<p style="page-break-before:always;"/>
+
+						<div style="margin-left:40px; margin-right:40px;">
+							<div name="custom_header">
+								<div class="row" >
+									<div class="col-3">
+										<div style="margin-top:80px;">
+											<img t-if="company.logo" t-att-src="image_data_uri(company.logo)" style="height: 105px; width: 170px;" alt="Logo"/>
+										</div>
+									</div>
+									<div class="col-9"/>
+								</div>
+								<div class="row">
+									<div class="col-12">
+										<div style="margin-top:20px;">
+											<img src="/ywebh_reports/static/src/img/header-line.png" style="height: 25px; width: 100%;"/>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<table style="width:100%; margin-top:25px; margin-bottom:50px;">
+							  <tr>
+								<th style="width:3%"><span style="font-size:15px;font-family: 'Lato', sans-serif;color:#231f20;"><b>T.</b></span></th>
+								<th style="width:32%"><span style="font-size:15px;font-family: 'Lato', sans-serif;color:#231f20;"><b><t t-esc="company.phone"/></b></span></th>
+								<th style="width:75%"><span style="font-size:15px;font-family: 'Lato', sans-serif;color:#231f20;"><b>Kingdom of Bahrain</b></span></th>
+								<th style="width:25%"><span style="font-size:15px;font-family: 'Lato', sans-serif;color:#231f20;" class="text-right"><b>ywebh.com</b></span></th>
+							  </tr>
+							  <tr>
+								<td><span style="font-size:15px;font-family: 'Lato', sans-serif;color:#231f20;"><b>E.</b></span></td>
+								<td><span style="font-size:15px;font-family: 'Lato', sans-serif;color:#231f20;"><b><t t-esc="company.email"/></b></span></td>
+								<td><span style="font-size:15px;font-family: 'Lato', sans-serif;color:#231f20;"><b>Manama</b></span></td>
+								<td></td>
+							  </tr>
+							</table>
+
+                            <table style="width:100%; margin-bottom:40px;">
+                              <tr>
+                                  <th style="width:50%">
+                                      <t t-if="company.vat">
+                                        <span style="font-size:25px;font-family: 'Lato', sans-serif;color:#231f20;"><b>VAT No.</b></span>
+                                      </t>
+                                  </th>
+<!--                                  <th style="width:50%">-->
+<!--                                      <span style="font-size:25px;font-family: 'Lato', sans-serif;color:#231f20;"><b>A/C No: </b><span style="font-weight:normal"><t t-esc="o.selected_bank_information.account_number"/></span></span>-->
+<!--                                  </th>-->
+                              </tr>
+                              <tr>
+                                <td>
+                                    <t t-if="company.vat">
+                                        <span style="font-size:25px;font-family: 'Lato', sans-serif;color:#231f20;"><t t-esc="company.vat"/></span>
+                                    </t>
+                                </td>
+<!--                                <td><span style="font-size:25px;font-family: 'Lato', sans-serif;color:#231f20;"><b>Swift Code: </b><t t-esc="o.selected_bank_information.swift_code"/></span></td>-->
+
+                              </tr>
+                            </table>
+
+
+
+<!--							<img src="/ywebh_reports/static/src/img/line.png" style="height: 2px; width: 15%;"/>-->
+
+<!--							<table style="width:100%; margin-top:10px;">-->
+<!--							  <tr>-->
+<!--								  <th style="width:25%"><span style="font-size:25px;font-family: 'Lato', sans-serif;color:#231f20;"><b>BILL TO.</b></span></th>-->
+<!--								  <th style="width:25%"><span style="font-size:25px;font-family: 'Lato', sans-serif;color:#231f20;"><b>INVOICE No.</b></span></th>-->
+<!--								  <th style="width:25%"><span style="font-size:25px;font-family: 'Lato', sans-serif;color:#231f20;"><b>ISSUE DATE.</b></span></th>-->
+<!--								  <th style="width:25%"><span style="font-size:25px;font-family: 'Lato', sans-serif;color:#231f20;"><b>DUE DATE.</b></span></th>-->
+<!--							  </tr>-->
+<!--							  <tr>-->
+<!--								<td>-->
+<!--									<t t-if="o.partner_id">-->
+<!--										<span style="font-size:25px;font-family: 'Lato', sans-serif;color:#231f20;"><t t-esc="o.partner_id.name"/></span>-->
+<!--									</t>-->
+<!--								</td>-->
+<!--								<td>-->
+<!--									<t t-if="o.number">-->
+<!--										<span style="font-size:25px;font-family: 'Lato', sans-serif;color:#231f20;"><t t-esc="o.number"/></span>-->
+<!--									</t>-->
+<!--								</td>-->
+<!--								<td>-->
+<!--									<t t-if="o.date_invoice">-->
+<!--										<span style="font-size:25px;font-family: 'Lato', sans-serif;color:#231f20;"><t t-esc="o.date_invoice.strftime('%d %b %Y')"/></span>-->
+<!--									</t>-->
+<!--								</td>-->
+<!--								<td>-->
+<!--									<t t-if="o.date_due">-->
+<!--										<span style="font-size:25px;font-family: 'Lato', sans-serif;color:#231f20;"><t t-esc="o.date_due.strftime('%d %b %Y')"/></span>-->
+<!--									</t>-->
+<!--								</td>-->
+<!--							  </tr>-->
+<!--							</table>-->
+
+<!--							<t t-set="display_discount" t-value="any([l.discount for l in o.invoice_line_ids])"/>-->
+
+<!--							<table class="table o_main_table" name="invoice_line_table" style="border: 3px solid black; margin-top:40px;">-->
+<!--								<thead>-->
+<!--									<tr>-->
+<!--										<th style="border: 3px solid black; background-color: black !important; color: white;" class="text-center">ITEM &amp; DESCRIPTION</th>-->
+<!--										<th style="border: 3px solid black; background-color: black !important; color: white;" class="text-center">AMOUNT</th>-->
+<!--									</tr>-->
+<!--								</thead>-->
+<!--								<tbody class="invoice_tbody">-->
+<!--									<t t-set="current_subtotal" t-value="0"/>-->
+
+<!--									<t t-foreach="o.invoice_line_ids" t-as="line">-->
+
+<!--										<t t-set="current_subtotal" t-value="current_subtotal + line.price_subtotal" groups="account.group_show_line_subtotals_tax_excluded"/>-->
+<!--										<t t-set="current_subtotal" t-value="current_subtotal + line.price_total" groups="account.group_show_line_subtotals_tax_included"/>-->
+
+<!--										<tr t-att-class="'bg-200 font-weight-bold o_line_section' if line.display_type == 'line_section' else 'font-italic o_line_note' if line.display_type == 'line_note' else ''" style="height: 340px;">-->
+<!--											<t t-if="not line.display_type" name="account_invoice_line_accountable">-->
+<!--												<td style="border: 3px solid black;" name="account_invoice_line_name"><span style="font-family: 'Lato', sans-serif;color:#231f20; margin-left:5px;" t-field="line.name"/></td>-->
+<!--												<td style="border: 3px solid black;" class="text-center">-->
+<!--													<b><span t-field="line.price_subtotal"/></b>-->
+<!--												</td>-->
+<!--											</t>-->
+<!--											<t t-if="line.display_type == 'line_section'">-->
+<!--												<td style="border: 3px solid black;" colspan="99">-->
+<!--													<span t-field="line.name"/>-->
+<!--												</td>-->
+<!--												<t t-set="current_section" t-value="line"/>-->
+<!--												<t t-set="current_subtotal" t-value="0"/>-->
+<!--											</t>-->
+<!--											<t t-if="line.display_type == 'line_note'">-->
+<!--												<td style="border: 3px solid black;" colspan="99">-->
+<!--													<span t-field="line.name"/>-->
+<!--												</td>-->
+<!--											</t>-->
+<!--										</tr>-->
+<!--									</t>-->
+
+<!--									<tr>-->
+<!--										<td style="border: 3px solid black;" class="text-right">-->
+<!--											<span style="font-family: 'Lato', sans-serif;color:#231f20;">-->
+<!--												<b>SUBTOTAL</b>-->
+<!--											</span>-->
+<!--										</td>-->
+<!--										<td style="border: 3px solid black;" class="text-center">-->
+<!--											<span>-->
+<!--												<b><span t-field="o.amount_untaxed"/></b>-->
+<!--											</span>-->
+<!--										</td>-->
+<!--									</tr>-->
+<!--									<tr>-->
+<!--										<td style="border: 3px solid black;" class="text-right">-->
+<!--											<span style="font-family: 'Lato', sans-serif;color:#231f20;">-->
+<!--												<b style="margin-right:24px;">VAT 5%</b>-->
+<!--											</span>-->
+<!--										</td>-->
+<!--										<td style="border: 3px solid black;" class="text-center">-->
+<!--											<span>-->
+<!--												<b><t t-esc="o.amount_total-o.amount_untaxed" t-options='{"widget": "monetary", "display_currency": company.currency_id}'/></b>-->
+<!--											</span>-->
+<!--										</td>-->
+<!--									</tr>-->
+<!--									<tr>-->
+<!--										<td style="border: 3px solid black;" class="text-right">-->
+<!--											<span style="font-family: 'Lato', sans-serif;color:#231f20;">-->
+<!--												<img src="/ywebh_reports/static/src/img/dots.png" style="height: 5px; width: 15%; margin-right:20px;"/>-->
+<!--												<b style="margin-right:28px;">TOTAL</b>-->
+<!--											</span>-->
+<!--										</td>-->
+<!--										<td style="border: 3px solid black;" class="text-center">-->
+<!--											<span>-->
+<!--												<b><span t-field="o.amount_total"/></b>-->
+<!--											</span>-->
+<!--										</td>-->
+<!--									</tr>-->
+<!--								</tbody>-->
+<!--							</table>-->
+
+<!--							<div name="custom_footer">-->
+<!--								<div class="row">-->
+<!--									<div class="col-12">-->
+<!--										<div style="margin-top:20px;">-->
+<!--											<img src="/ywebh_reports/static/src/img/footer_taxinvoice.png" style="height: 60px; width: 100%;"/>-->
+<!--										</div>-->
+<!--									</div>-->
+<!--								</div>-->
+<!--							</div>-->
+
+						</div>
+
+					</div>
+
+				</div>
+			</xpath>
+		</template>
+    </data>
+</odoo>

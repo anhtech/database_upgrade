@@ -1,0 +1,23 @@
+<odoo>
+  <data>
+    <record id="sale_order_form_inherit" model="ir.ui.view">
+        <field name="name">sale.order.form.inherit</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr='//field[@name="amount_total"]' position='after'>
+                <div class="oe_subtotal_footer_separator oe_inline o_td_label">
+                    <label for="amount_advance"/>
+                </div>
+                <field name="amount_advance" nolabel="1" class="oe_subtotal_footer_separator" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+            </xpath>
+            <xpath expr='//field[@name="partner_shipping_id"]' position='after'>
+                <field name="sales_term"/>
+            </xpath>
+            <xpath expr='//field[@name="note"]' position='replace'>
+                <field name="note" class="oe_inline" placeholder="Your note here ..."/>
+            </xpath>
+        </field>
+    </record>
+  </data>
+</odoo>

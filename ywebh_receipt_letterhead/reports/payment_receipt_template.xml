@@ -1,0 +1,191 @@
+<odoo>
+    <data>
+
+		<template id="report_payment_receipt_ywe_letterhead_document">
+            <t t-if="not o" t-set="o" t-value="doc"/>
+
+            <t t-if="not company">
+                <!-- Multicompany -->
+                <t t-if="company_id">
+                    <t t-set="company" t-value="company_id"/>
+                </t>
+                <t t-elif="o and 'company_id' in o">
+                    <t t-set="company" t-value="o.company_id.sudo()"/>
+                </t>
+                <t t-else="else">
+                    <t t-set="company" t-value="res_company"/>
+                </t>
+            </t>
+
+            <div class="header"/>
+
+            <div class="article o_report_layout_standard" t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id" t-att-data-oe-lang="o and o.env.context.get('lang')">
+                <t t-set="address"/>
+                <t t-call="web.address_layout"/>
+				<div class="page">
+                    <br/>
+					<div class="row">
+						<div class="col-4">
+							<span style="font-size:20px;font-family: 'Lato', sans-serif;color:#231f20; font-weight:bold;">REC - </span>
+							<span style="font-size:20px;font-family: 'Lato', sans-serif; font-weight:bold; color: white; display: inline-block; width: 150px; height: 32px; background-color:#ef549f;">
+								<t t-esc="o.name.split('/')[1]"/> - <t t-esc="o.name.split('/')[2]"/>
+							</span>
+						</div>
+						<div class="col-4">
+							<center>
+								<t t-if="o.payment_date">
+									<span style="font-size:20px;font-family: 'Lato', sans-serif;color:#231f20; font-weight:bold;">DATE. </span>
+									<span style="font-size:20px;font-family: 'Lato', sans-serif;color:#231f20;"><t t-esc="o.payment_date.strftime('%d %B %Y')"/></span>
+								</t>
+							</center>
+						</div>
+						<div class="col-4 ml8">
+							<t t-if="company.vat">
+								<span style="font-size:20px;font-family: 'Lato', sans-serif;color:#231f20; font-weight:bold;">VAT ACCOUTNT No.</span>
+								<br/>
+								<span style="font-size:20px;font-family: 'Lato', sans-serif;color:#231f20;"><t t-esc="company.vat"/></span>
+							</t>
+						</div>
+					</div>
+					<br/>
+					<div class="row">
+						<div class="col-8">
+							<t t-if="o.partner_id">
+								<span style="font-size:20px;font-family: 'Lato', sans-serif;color:#231f20; font-weight:bold;">Received with thanks from. </span>
+								<span style="font-size:20px;font-family: 'Lato', sans-serif;color:#231f20;" t-field="o.partner_id.name"/>
+							</t>
+						</div>
+						<div class="col-4 ml8">
+							<t t-if="o.partner_id">
+								<t t-if="o.partner_id.vat">
+									<span style="font-size:20px;font-family: 'Lato', sans-serif;color:#231f20; font-weight:bold;">Customer VAT No.</span>
+									<br/>
+									<span style="font-size:20px;font-family: 'Lato', sans-serif;color:#231f20;"><t t-esc="o.partner_id.vat"/></span>
+								</t>
+							</t>
+						</div>
+					</div>
+					<hr style="width:100%; height:2.5px; color:black; background-color:black; border-width:0;"/>
+                    <table width="100%">
+                        <colgroup>
+                            <col width='33%' />
+                            <col width='33%' />
+                            <col width='34%' />
+                        </colgroup>
+                        <tr>
+							<t t-if="o.journal_id.type == 'cash'">
+								<td>
+									<span style="margin-left:1em; font-size:22px; background-color:#fff100;">☐</span><span style="font-size:22px;font-family: 'Lato', sans-serif;color:#231f20; font-weight:bold;"> Cash</span>
+								</td>
+							</t>
+							<t t-else="">
+								<td>
+									<span style="padding-left:1em; font-size:22px;">☐</span><span style="font-size:22px;font-family: 'Lato', sans-serif;color:#231f20; font-weight:bold;"> Cash</span>
+								</td>
+							</t>
+							<t t-if="o.isCheque">
+								<td>
+									<span style="margin-left:3em; font-size:22px; background-color:#fff100;">☐</span><span style="font-size:22px;font-family: 'Lato', sans-serif;color:#231f20; font-weight:bold;"> Cheque</span>
+								</td>
+							</t>
+							<t t-else="">
+								<td>
+									<span style="padding-left:3em; font-size:22px;">☐</span><span style="font-size:22px;font-family: 'Lato', sans-serif;color:#231f20; font-weight:bold;"> Cheque</span>
+								</td>
+							</t>
+							<t t-if="o.journal_id.type == 'bank' and 'Cheque' not in o.journal_id.name and not o.isCheque">
+								<td>
+									<span style="margin-left:3em; font-size:22px; background-color:#fff100;">☐</span><span style="font-size:22px;font-family: 'Lato', sans-serif;color:#231f20; font-weight:bold;"> Bank Transfer</span>
+								</td>
+							</t>
+							<t t-else="">
+								<td>
+									<span style="padding-left:3em; font-size:22px;">☐</span><span style="font-size:22px;font-family: 'Lato', sans-serif;color:#231f20; font-weight:bold;"> Bank Transfer</span>
+								</td>
+							</t>
+                        </tr>
+                    </table>
+					<br/>
+					<t t-set="amount_due" t-value="0"/>
+					<t t-set="amount_total" t-value="0"/>
+					<table class="table table-sm">
+						<thead>
+							<tr>
+								<th style="font-family: 'Lato', sans-serif; background-color:#000000; color: white; border: 2px solid black; border-left: none;" class="text-center"><b>FOR SETTLEMENT OF OUR INVOICE</b></th>
+								<th style="font-family: 'Lato', sans-serif; background-color:#000000; color: white; border: 2px solid black; border-right: none;" class="text-center"><b>SUM OF BD.</b></th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr t-foreach="o.reconciled_invoice_ids" t-as="inv">
+								<td style="border-top: none; border-left: none; border-right: 2px solid black; border-bottom: 2px solid black;">
+									<b><span style="font-size:18px; font-family: 'Lato', sans-serif; padding-left: 20px; padding-top: 20px;">PAYMENT FOR <span t-field="inv.number"/></span></b>
+									<br/>
+									<t t-foreach="inv.invoice_line_ids" t-as="line">
+											<b><span style="font-size:18px; font-family: 'Lato', sans-serif; padding-left: 30px; padding-top: 20px;" t-field="line.product_id.name"/></b>
+											<br/>
+											<div style="font-size:12px; font-family: 'Lato', sans-serif; padding-left: 40px;">
+												<span t-raw="line.name"/>
+											</div>
+									</t>
+								</td>
+								<td style="border-top: none; border-left: 2px solid black; border-right: none; border-bottom: 2px solid black;" class="text-center o_price_total">
+									<b><span style="font-family: 'Lato', sans-serif; padding-top: 20px;" t-esc="o._get_invoice_payment_amount(inv)" t-options="{'widget': 'monetary', 'display_currency': inv.currency_id}"/></b>
+								</td>
+								<t t-set="amount_due" t-value="amount_due+inv.residual"/>
+								<t t-set="amount_total" t-value="amount_total+o._get_invoice_payment_amount(inv)"/>
+							</tr>
+							<tr>
+								<td style="border-top: none; border-left: none; border-right: 2px solid black; border-bottom: 2px solid black; text-align:right;">
+									<b><span style="font-family: 'Lato', sans-serif; padding-right: 10px; padding-top: 20px;">TOTAL AMOUNT</span></b>
+								</td>
+								<td style="border-top: none; border-left: 2px solid black; border-right: none; border-bottom: 2px solid black;" class="text-center o_price_total">
+									<b><span style="font-family: 'Lato', sans-serif; padding-top: 20px;" t-esc="amount_total" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/></b>
+								</td>
+							</tr>
+							<tr>
+								<td style="border-top: none; border-left: none; border-right: 2px solid black; border-bottom: 2px solid black; text-align:right;">
+									<b><span style="font-family: 'Lato', sans-serif; padding-right: 10px; padding-top: 20px;">
+										<span style="display: inline-block; width: 250px; height: 20px; background-color: #00abc0;">
+											<span style="padding-left: 6px;">AMOUNT DUE</span>
+										</span>
+									</span></b>
+								</td>
+								<td style="border-top: none; border-left: 2px solid black; border-right: none; border-bottom: 2px solid black;" class="text-center o_price_total">
+									<b><span style="font-family: 'Lato', sans-serif; padding-top: 20px;" t-esc="amount_due" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/></b>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					<div class="row">
+						<div class="col-3">
+							<span style="font-size:15px;font-family: 'Lato', sans-serif;color:#231f20; font-weight:bold;">• • • •</span>
+						</div>
+						<div class="col-9"/>
+					</div>
+					<span style="font-size:20px;font-family: 'Lato', sans-serif;color:#231f20; font-weight:bold;">Signature</span>
+                </div>
+            </div>
+
+            <div class="footer o_standard_footer">
+                <div class="row">
+                    <div class="col-7"/>
+                    <div class="col-5">
+                        <img src="/ywebh_receipt_letterhead/static/img/half_receipt_footer_c.png" class="float-right" style="width: 100%;"/>
+                    </div>
+                </div>
+            </div>
+		</template>
+
+
+		<template id="report_payment_receipt_ywe_letterhead">
+			<t t-call="web.html_container">
+				<t t-foreach="docs" t-as="o">
+					<t t-set="lang" t-value="o.partner_id.lang"/>
+					<!-- Use Cover Page here -->
+					<t t-call="ywebh_receipt_letterhead.report_payment_receipt_ywe_letterhead_document" t-lang="lang"/>
+				</t>
+			</t>
+		</template>
+
+    </data>
+</odoo>

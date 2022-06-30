@@ -1,0 +1,27 @@
+<odoo>
+  <data>
+		<record id="payslip_main_inherit" model="ir.ui.view">
+			<field name="name">hr.payslip.attendance_share</field>
+			<field name="model">hr.payslip</field>
+			<field name="inherit_id" ref="hr_payroll.view_hr_payslip_form" />
+			<field name="arch" type="xml">
+				<xpath expr="//field[@name='credit_note']" position="after">
+					<field name="normal_attendance" widget="float_time"/>
+					<field name="real_normal_attendance" widget="float_time"/>
+					<field name="OT1_attendance" widget="float_time"/>
+					<field name="lateness" widget="float_time"/>
+<!--					<field name="OT2_attendance" />-->
+<!--					<field name="real_morning_lateness" />-->
+<!--					<field name="real_evening_lateness" />-->
+<!--					<field name="morning_lateness" />-->
+<!--					<field name="evening_lateness" />-->
+					<field name="number_of_days"/>
+					<field name="number_of_days_excl_leaves"/>
+					<field name="number_of_absent_days"/>
+					<field name="number_of_leaves_days"/>
+					<field name="number_of_holiday_days"/>
+				</xpath>
+			</field>
+		</record>
+  </data>
+</odoo>

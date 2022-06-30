@@ -1,0 +1,79 @@
+<odoo>
+  <data>
+		<record model="ir.ui.view" id="working_ours_inherit">
+			<field name="name">resource.calendar.brc</field>
+			<field name="model">resource.calendar</field>
+			<field name="inherit_id" ref="resource.resource_calendar_form" />
+			<field name="arch" type="xml">
+<!--				<xpath expr="//field[@name='tz']" position="after">-->
+<!--					<field name="is_weekly_group"/>-->
+<!--					<field name="weekly_group" attrs="{'invisible': [('is_weekly_group','=', False)]}"/>-->
+<!--				</xpath>-->
+				<xpath expr="//field[@name='tz']" position="after">
+					<field name="dynamic_working"/>
+				</xpath>
+				<xpath expr="//div[@class='oe_button_box']" position="inside">
+					<field name="lunch_state" attrs="{'invisible': True}"/>
+					<button name="change_auto_lunch_state" type="object" attrs="{'invisible': [('lunch_state','=', False)]}" string="Auto lunch Break" icon="fa-thumbs-o-up" class="oe_stat_button" groups="base.group_user"/>
+					<button name="change_auto_lunch_state" type="object" attrs="{'invisible': [('lunch_state','=', True)]}" string="Auto lunch Break" icon="fa-thumbs-o-down" class="oe_stat_button" groups="base.group_user"/>
+				</xpath>
+				<xpath expr="//notebook" position="inside">
+					<page string="Deduction Rules">
+						<field name="deduction_ids">
+							<tree editable="bottom">
+								<field name="log_type"/>
+								<field name="hour_from" widget="float_time"/>
+								<field name="hour_to" widget="float_time"/>
+								<field name="deduction_min" widget="float_time"/>
+							</tree>
+						</field>
+					</page>
+					<page string="Rounding">
+						<field name="nw_rules">
+							<tree editable="bottom">
+								<field name="operator"/>
+								<field name="hour_from" widget="float_time"/>
+								<field name="hour_to" widget="float_time"/>
+							</tree>
+						</field>
+					</page>
+					<page string="Overtime Rounding">
+						<field name="ot_rules">
+							<tree editable="bottom">
+								<field name="operator"/>
+								<field name="hour_from" widget="float_time"/>
+								<field name="hour_to" widget="float_time"/>
+							</tree>
+						</field>
+					</page>
+				</xpath>
+				<xpath expr="//field[@name='attendance_ids']" position="replace">
+					<field name="attendance_ids">
+						<tree editable="top">
+							<!-- BRC don't need a name for each part of day
+							<field name="name"/> -->
+							<field name="dayofweek"/>
+							<field name="hour_from" widget="float_time"/>
+							<field name="hour_to" widget="float_time"/>
+							<field name="grace_time_in"/>
+							<field name="grace_time_out"/>
+							<field name="lunch_break_from" widget="float_time"/>
+							<field name="lunch_break_to" widget="float_time"/>
+							<field name="ot1_from" widget="float_time"/>
+							<field name="ot1_to" widget="float_time"/>
+							<field name="ot2_from" widget="float_time"/>
+							<field name="ot2_to" widget="float_time"/>
+							<field name="night_shift_box"/>
+							<field name="holiday_box"/>
+							<!-- Hide it and make it by default when selected for all dates
+							<field name="date_from"/>
+							<field name="date_to"/> -->
+						</tree>
+					</field>
+				</xpath>
+			</field>
+		</record>
+
+
+  </data>
+</odoo>

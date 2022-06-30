@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_ywe_profit_report_profit_report_out,ywe_profit_report.profit_report_out,model_profit_report_out,,1,1,1,1

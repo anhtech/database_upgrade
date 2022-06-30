@@ -1,0 +1,18 @@
+<odoo>
+    <data>
+        <record id="invoice_payments_form" model="ir.ui.view">
+		   <field name="name">account.invoice.formInherited</field>
+		   <field name="model">account.invoice</field>
+		   <field name="inherit_id" ref="account.invoice_form"/>
+		   <field name="arch" type="xml">
+			   <xpath expr="//div[@name='button_box']" position="inside">
+				   <field name="has_payment" invisible="1"/>
+				   <button class="oe_stat_button" name="button_payments" string="Payments" type="object" attrs="{'invisible':[('has_payment','=',False)]}" icon="fa-money"/>
+			   </xpath>
+			   <xpath expr="//field[@name='cash_rounding_id']" position="after">
+				   <field name="selected_bank_information" options="{'no_create': True, 'no_create_edit':True}" domain="[('related_company_id', '=', company_id)]"/>
+			   </xpath>
+           </field>
+        </record>
+    </data>
+</odoo>

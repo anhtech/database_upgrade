@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data>
+<template id="action_group_d_report_template_document">
+    <t t-set="company" t-value="res_company"/>
+
+        <div class="article">
+
+        <t t-foreach="records" t-as="line">
+
+        <div class="o_report_layout_background" style="page-break-before: always;">
+            <div class="row">
+                <div class="col-3">
+                    <img t-if="company.logo" t-att-src="'data:image/png;base64,%s' % to_text(company.logo)" height="54" width="180"/>
+                </div>
+                <div class="col-6" name="company_address"><center>
+                        <ul class="list-unstyled">
+                            <li t-if="company.name"><span t-field="company.name"/></li>
+                            <li>Individual Attendance Report (<span t-esc="data['report_type']"/>)</li>
+                            <li>From: <span t-esc="data['start_date']"/>  To:  <span t-esc="data['end_date']"/></li>
+                        </ul>
+                </center></div>
+                <div class="col-3" name="company_address">
+                    <ul class="list-unstyled">
+                        <li style="text-align: right;">Date: <span t-esc="data['printing_date']"/></li>
+                        <li style="text-align: right;">Time: <span t-esc="data['printing_time']"/></li>
+                    </ul>
+                </div>
+            </div>
+
+        <table  style="border: 1px solid black;" width="100%">
+             <thead>
+                    <tr style="border: 1px solid black;">
+                        <th style="border: 1px solid black;" width="15%">  Employee-ID</th>
+                        <th style="border: 1px solid black;" width="50%">  Name</th>
+                        <!-- <th style="border: 1px solid black;">Department</th> -->
+                        <th style="border: 1px solid black;" width="35%">  Job</th>
+                        <!-- <th style="border: 1px solid black;">Coach</th> -->
+
+                            </tr>
+                        </thead>
+            <tr style="border: 1px solid black;">
+        	    <td style="border: 1px solid black;"><span t-esc="line[0].id"/></td>
+                <td style="border: 1px solid black;"><span t-field="line[0].name"/></td>
+                <!-- <td style="border: 1px solid black;"><span t-esc="o.department_id.name"/></td> -->
+                <td style="border: 1px solid black;"><span t-esc="line[0].job_id.name"/></td>
+                <!-- <td style="border: 1px solid black;"><span t-esc="o.coach_id.name"/></td> -->
+            </tr>
+        </table><br/>
+            <div class="row">
+                    <table class="table table-condensed">
+                        <thead>
+                    <tr>
+                        <th class="text-left">Sign In</th>
+                        <th class="text-center">Sign Out</th>
+                        <th class="text-center">Overtime 1</th>
+                        <th class="text-center">Overtime 2</th>
+                        <th class="text-center">Late Login</th>
+                        <th class="text-center">Early Logout</th>
+                        <th class="text-right">Attendance</th>
+                        <!-- <th class="text-right">State</th> -->
+                        </tr>
+                        </thead>
+                        <t t-foreach="line[1]" t-as="main">
+                            <tr>
+                                <td class="text-left"><span style="font-size: 90%;" t-field="main.check_in_timezone"/></td>
+                                <td class="text-center"><span style="font-size: 90%;" t-field="main.check_out_timezone"/></td>
+                                <td class="text-center"><span t-field="main.OT1_attendance" t-options='{"widget": "float_time"}' /></td>
+                                <td class="text-center"><span t-field="main.OT2_attendance" t-options='{"widget": "float_time"}' /></td>
+                                <td class="text-center"><span t-field="main.morning_lateness" t-options='{"widget": "float_time"}' /></td>
+                                <td class="text-center"><span t-field="main.evening_lateness" t-options='{"widget": "float_time"}' /></td>
+                                <td class="text-right"><span t-field="main.normal_attendance" t-options='{"widget": "float_time"}' /></td>
+                            </tr>
+                        </t>
+                        <tr>
+                            <td class="text-left"><strong>Total</strong></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"><strong><span t-esc="sum(record.OT1_attendance for record in line[1])" t-options='{"widget": "float_time"}' /></strong></td>
+                            <td class="text-center"><strong><span t-esc="sum(record.OT2_attendance for record in line[1])" t-options='{"widget": "float_time"}' /></strong></td>
+                            <td class="text-center"><strong><span t-esc="sum(record.morning_lateness for record in line[1])" t-options='{"widget": "float_time"}' /></strong></td>
+                            <td class="text-center"><strong><span t-esc="sum(record.evening_lateness for record in line[1])" t-options='{"widget": "float_time"}' /></strong></td>
+                            <td class="text-right"><strong><span t-esc="sum(record.normal_attendance for record in line[1])" t-options='{"widget": "float_time"}' /></strong></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="footer o_background_footer">
+                <div class="text-center">
+                    <div class="text-muted">
+                        Page:
+                        <span class="page"/>
+                        of
+                        <span class="topage"/>
+                    </div>
+                </div>
+            </div>
+            </t>
+        </div>
+</template>
+
+<template id="action_group_d_report_template">
+    <t t-call="web.html_container">
+        <t t-call="bi_attendance_report.action_group_d_report_template_document" />
+    </t>
+</template>
+
+</data>
+</odoo>
+

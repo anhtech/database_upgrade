@@ -1,0 +1,22 @@
+<odoo>
+    <data>
+        <record id="res_company_bank_form" model="ir.ui.view">
+            <field name="name">res.company.bank.form</field>
+            <field name="model">res.company.bank</field>
+            <field name="arch" type="xml">
+                <form string="Bank Information">
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="account_number"/>
+                            <field name="iban"/>
+                            <field name="account_name"/>
+                            <field name="country_id"/>
+                            <field name="swift_code"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

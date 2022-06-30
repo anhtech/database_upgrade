@@ -1,0 +1,101 @@
+<odoo>
+  <data>
+
+<!--      <report -->
+<!--            id="report_pdf_attendance"-->
+<!--            string="Attendance Report"-->
+<!--            model="hr.employee" -->
+<!--            report_type="qweb-pdf"-->
+<!--            menu="False"-->
+<!--            file="bi_attendance_report.attendance_report_template"-->
+<!--            name="bi_attendance_report.attendance_report_template"-->
+<!--            paperformat="bi_attendance_report.paperformat_attendance_report"-->
+<!--        />-->
+
+      <record id="wizard_action_inventory_report_view" model="ir.ui.view">
+          <field name="name">report.stock.wizard.form</field>
+          <field name="model">report.stock.wizard</field>
+          <field name="arch" type="xml">
+              <form string="Stock Report Wizard">
+                  <group>
+                      <group>
+                          <field name="start_date"/>
+                          <field name="end_date"/>
+                      </group>
+                      <group>
+                          <field name="pricelist_ids" widget="many2many_tags" options="{'no_create': True}"/>
+                          <field name="include_pos"/>
+                          <field name="include_sale"/>
+                      </group>
+                  </group>
+                  <group string="Products">
+                      <field name="include_all_products"/>
+                      <field name="product_ids" attrs="{'readonly':[('include_all_products','=',True)]}">
+                          <tree editable="bottom" limit="10">
+                              <field name="name"/>
+                          </tree>
+                      </field>
+                  </group>
+                  <footer>
+                    <button name="submit" string="Submit" type="object"/>
+                    <button name="print_excel" string="Print Excel" type="object"/>
+                  <button string="Cancel" class="btn-primary" special="cancel"/>
+                  </footer>
+                </form>
+          </field>
+      </record>
+
+      <record id="action_inventory_report" model="ir.actions.act_window">
+          <field name="name">Print Inventory Report</field>
+          <field name="type">ir.actions.act_window</field>
+          <field name="res_model">report.stock.wizard</field>
+          <field name="view_mode">form</field>
+          <field name="view_id" ref="wizard_action_inventory_report_view"/>
+          <field name="target">new</field>
+      </record>
+
+        <record id="paperformat_euro_no_margin" model="report.paperformat">
+            <field name="name">European A4 without borders (Sabaya)</field>
+            <field name="default" eval="False" />
+            <field name="format">A4</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">5</field>
+            <field name="margin_bottom">20</field>
+            <field name="margin_left">2</field>
+            <field name="margin_right">2</field>
+            <field name="header_line" eval="False" />
+            <field name="header_spacing">0</field>
+        </record>
+
+      <report
+        id="stock_report_pdf"
+        string="Inventory Profitability Report"
+        model="stock.picking"
+        report_type="qweb-pdf"
+        menu="False"
+        file="ywe_profit_report.action_stock_report_template"
+        name="ywe_profit_report.action_stock_report_template"
+        paperformat="paperformat_euro_no_margin"
+        />
+
+	<record id="pr_excel_views" model="ir.ui.view">
+		<field name="name">profit.report.out</field>
+		<field name="model">profit.report.out</field>
+		<field name="arch" type="xml">
+			<form string="Export Sale Orders">
+				<group>
+					<field name="file_name" filename="pr_data" />
+					<field name="pr_data" invisible="1" />
+			<!--		<field name="file_names" filename="pr_work" />
+					<field name="pr_work" invisible="1" />-->
+				</group>
+				<footer>
+					<button string="Cancel" class="btn-primary" special="cancel"/>
+				</footer>
+			</form>
+		</field>
+	</record>
+
+
+  </data>
+</odoo>

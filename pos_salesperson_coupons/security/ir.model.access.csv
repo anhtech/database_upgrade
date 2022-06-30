@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_sales_person,pos_salesperson_coupons.sales_person,model_sales_person,,1,1,1,1
+access_pos_coupon_salesperson,pos_salesperson_coupons.pos_coupon_salesperson,model_pos_coupon_salesperson,,1,1,1,1
+access_coupon_product_line,pos_salesperson_coupons.coupon_product_line,model_coupon_product_line,,1,1,1,1
+access_pos_coupon_used,pos_salesperson_coupons.pos_coupon_used,model_pos_coupon_used,,1,1,1,1

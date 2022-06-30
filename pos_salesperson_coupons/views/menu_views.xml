@@ -1,0 +1,66 @@
+<odoo>
+  <data>
+
+    <record id="action_pos_coupons" model="ir.actions.act_window">
+        <field name="name">Coupons</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">pos.coupon.salesperson</field>
+        <field name="view_ids" eval="[(5, 0, 0),
+                          (0, 0, {'view_mode': 'tree', 'view_id': ref('pos_coupon_salesperson_tree')}),
+                          (0, 0, {'view_mode': 'form', 'view_id': ref('pos_coupon_salesperson_form')})]"/>
+        <field name="search_view_id" ref="search_pos_coupon_salesperson"/>
+        <field name="context">{}</field>
+    </record>
+
+    <record id="action_sales_person" model="ir.actions.act_window">
+        <field name="name">Salesperson</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">sales.person</field>
+        <field name="view_ids" eval="[(5, 0, 0),
+                          (0, 0, {'view_mode': 'tree', 'view_id': ref('sales_person_tree')}),
+                          (0, 0, {'view_mode': 'form', 'view_id': ref('sales_person_form')})]"/>
+        <field name="search_view_id" ref="search_sales_person"/>
+        <field name="context">{}</field>
+    </record>
+
+    <record id="action_pos_coupons_history" model="ir.actions.act_window">
+        <field name="name">History</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">pos.coupon.used</field>
+        <field name="view_ids" eval="[(5, 0, 0),
+                          (0, 0, {'view_mode': 'tree', 'view_id': ref('pos_coupon_used_tree')}),
+                          ]"/>
+        <field name="search_view_id" ref="search_pos_coupon_used"/>
+        <field name="context">{}</field>
+    </record>
+
+    <menuitem
+        id="menu_pos_coupons"
+        parent="point_of_sale.menu_point_root"
+        name="Coupons"
+        groups="point_of_sale.group_pos_manager"
+        sequence="12"/>
+
+    <menuitem
+        id="menu_pos_coupons_coupons"
+        action="action_pos_coupons"
+        parent="pos_salesperson_coupons.menu_pos_coupons"
+        name="Coupons"
+        sequence="1"/>
+
+    <menuitem
+        id="menu_pos_coupons_salesperson"
+        action="action_sales_person"
+        parent="pos_salesperson_coupons.menu_pos_coupons"
+        name="Salespersons"
+        sequence="2"/>
+
+    <menuitem
+        id="menu_pos_coupons_history"
+        action="action_pos_coupons_history"
+        parent="pos_salesperson_coupons.menu_pos_coupons"
+        name="History"
+        sequence="3"/>
+
+  </data>
+</odoo>

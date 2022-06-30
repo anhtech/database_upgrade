@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+	<data>
+		<record model="ir.ui.view" id="wizard_assign_form_view">
+			<field name="name">Employee Assign Work Hours Wizard</field>
+			<field name="model">employee.assign.wizard</field>
+			<field name="arch" type="xml">
+				<form string="Synchronize Data">
+					<group>
+						<group>
+							<field name="resource_calendar_id"/>
+						</group>
+					</group>
+					<footer>
+						<button name="action_employee_assign" type="object"
+							groups="hr_attendance.group_hr_attendance_manager" string="Assign Work Hours"
+							class="oe_highlight"
+							confirm="This action will assign all selected employees to the specified work hours shift. Are you sure to proceed?" />
+						<button special="cancel" string="Cancel" />
+					</footer>
+				</form>
+			</field>
+		</record>
+
+		<act_window id="action_employee_assign" name="Assign Work Hours"
+			src_model="hr.employee" res_model="employee.assign.wizard" view_mode="form"
+			target="new" context="{'employee_ids':active_ids}" key2="client_action_multi" />
+
+		<record model="ir.ui.view" id="wizard_assign_special_form_view">
+			<field name="name">Employee Assign Special Work Hours Wizard</field>
+			<field name="model">employee.assign.wizard.special</field>
+			<field name="arch" type="xml">
+				<form string="Synchronize Data">
+					<group>
+						<group>
+							<field name="resource_calendar_id"/>
+						</group>
+					</group>
+					<footer>
+						<button name="action_employee_assign_special" type="object"
+							groups="hr_attendance.group_hr_attendance_manager" string="Assign Work Hours"
+							class="oe_highlight"
+							confirm="This action will assign all selected employees to the specified special work hours shift. Are you sure to proceed?" />
+						<button special="cancel" string="Cancel" />
+					</footer>
+				</form>
+			</field>
+		</record>
+
+		<act_window id="action_employee_assign_special" name="Assign Special Work Hours"
+			src_model="hr.employee" res_model="employee.assign.wizard.special" view_mode="form"
+			target="new" context="{'employee_ids':active_ids}" key2="client_action_multi" />
+
+	</data>
+</odoo>

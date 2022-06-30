@@ -1,0 +1,47 @@
+<odoo>
+    <data>
+
+		<template id="terms_page_template">
+            <t t-if="not o" t-set="o" t-value="doc"/>
+
+            <t t-if="not company">
+                <!-- Multicompany -->
+                <t t-if="company_id">
+                    <t t-set="company" t-value="company_id"/>
+                </t>
+                <t t-elif="o and 'company_id' in o">
+                    <t t-set="company" t-value="o.company_id.sudo()"/>
+                </t>
+                <t t-else="else">
+                    <t t-set="company" t-value="res_company"/>
+                </t>
+            </t>
+
+            <div class="header"/>
+
+            <div class="article o_report_layout_standard" t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id" t-att-data-oe-lang="o and o.env.context.get('lang')">
+                <t t-set="address"/>
+                <t t-call="web.address_layout"/>
+				<div class="page">
+                    <br/>
+                    <div class="row">
+                        <div class="col-12">
+                            <span style="font-size:15px;font-family: 'Lato', sans-serif;color:#231f20;" t-raw="o.sales_term.terms_html"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer o_standard_footer">
+                <div class="row">
+                    <div class="col-7"/>
+                    <div class="col-5">
+                        <img src="/ywebh_quotation_letterhead/static/img/half_quotation_footer.png" class="float-right" style="width: 100%;"/>
+                    </div>
+                </div>
+            </div>
+
+		</template>
+
+    </data>
+</odoo>

@@ -1,0 +1,40 @@
+<odoo>
+  <data>
+		<record model="ir.ui.view" id="attendances_tree_inherit">
+			<field name="name">hr.attendance.brc_attendances_list</field>
+			<field name="model">hr.attendance</field>
+			<field name="inherit_id" ref="hr_attendance.view_attendance_tree" />
+			<field name="arch" type="xml">
+				<xpath expr="//field[@name='checkout_device_id']" position="after">
+                    <field name="normal_attendance" widget="float_time"/>
+                    <field name="OT1_attendance" widget="float_time"/>
+                    <field name="lateness" widget="float_time"/>
+<!--                    <field name="morning_lateness" widget="float_time"/>-->
+<!--                    <field name="evening_lateness" widget="float_time"/>-->
+				</xpath>
+				<xpath expr="//field[@name='activity_id']" position="after">
+                    <field name="allowed_leave"/>
+				</xpath>
+			</field>
+		</record>
+		<record model="ir.ui.view" id="attendances_form_inherit">
+			<field name="name">hr.attendance.brc_attendances_form</field>
+			<field name="model">hr.attendance</field>
+			<field name="inherit_id" ref="hr_attendance.hr_attendance_view_form" />
+			<field name="arch" type="xml">
+				<xpath expr="//field[@name='activity_id']" position="after">
+                    <field name="allowed_leave"/>
+				</xpath>
+			</field>
+		</record>
+
+	  <record id="action_server_recalculate" model="ir.actions.server">
+		  <field name="name">Recalculate</field>
+		  <field name="model_id" ref="model_hr_attendance"/>
+		  <field name="binding_model_id" ref="model_hr_attendance"/>
+		  <field name="state">code</field>
+		  <field name="code">records.recalculateRecord()</field>
+	  </record>
+
+  </data>
+</odoo>

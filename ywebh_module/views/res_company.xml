@@ -1,0 +1,20 @@
+<odoo>
+    <data>
+        <record id="res_company_formInherit" model="ir.ui.view">
+            <field name="name">res.company.formInherit</field>
+            <field name="model">res.company</field>
+            <field name="inherit_id" ref="base.view_company_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[@class='o_address_format']" position="after">
+                    <field name="banks_information">
+                        <tree>
+                            <field name="name"/>
+                            <field name="account_name"/>
+                            <field name="iban"/>
+                        </tree>
+                    </field>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

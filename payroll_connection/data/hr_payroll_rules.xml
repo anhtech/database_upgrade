@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+
+        <record id="contrib_register_employeess" model="hr.contribution.register">
+            <field name="name">Employeess</field>
+            <field name="partner_id" eval="False"/>
+        </record>
+
+        <record id="REAL" model="hr.salary.rule.category">
+            <field name="name">Working Hours</field>
+            <field name="code">REAL</field>
+        </record>
+
+        <record id="hr_rule_NW1" model="hr.salary.rule">
+            <field name="name">Normal Working</field>
+            <field name="sequence" eval="2"/>
+            <field name="code">NW1</field>
+            <field name="category_id" ref="REAL"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = (payslip.normal_attendance+(contract.resource_calendar_id.hours_per_day*(payslip.number_of_holiday_days+payslip.number_of_leaves_days)))*((contract.wage / (payslip.number_of_days+payslip.number_of_absent_days)) / contract.resource_calendar_id.hours_per_day)</field>
+        </record>
+
+        <record id="hr_rule_OT1" model="hr.salary.rule">
+            <field name="name">Overtime</field>
+            <field name="sequence" eval="3"/>
+            <field name="code">OT1</field>
+            <field name="category_id" ref="hr_payroll.ALW"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = payslip.OT1_attendance*((contract.wage / (payslip.number_of_days+payslip.number_of_absent_days)) / contract.resource_calendar_id.hours_per_day)*1.25</field>
+        </record>
+
+        <record id="hr_rule_OT2" model="hr.salary.rule">
+            <field name="name">Overtime 2</field>
+            <field name="sequence" eval="4"/>
+            <field name="code">OT2</field>
+            <field name="category_id" ref="hr_payroll.ALW"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = 0</field>
+        </record>
+
+        <record id="hr_rule_ABS" model="hr.salary.rule">
+            <field name="name">Absents</field>
+            <field name="sequence" eval="5"/>
+            <field name="code">ABS</field>
+            <field name="category_id" ref="hr_payroll.DED"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = payslip.number_of_absent_days*-1*(contract.wage / (payslip.number_of_days+payslip.number_of_absent_days))</field>
+        </record>
+
+        <record id="hr_rule_LL1" model="hr.salary.rule">
+            <field name="name">Lateness</field>
+            <field name="sequence" eval="6"/>
+            <field name="code">LL1</field>
+            <field name="category_id" ref="hr_payroll.DED"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = payslip.lateness*((contract.wage / (payslip.number_of_days+payslip.number_of_absent_days)) / contract.resource_calendar_id.hours_per_day)*-1</field>
+        </record>
+
+        <record id="hr_rule_EL1" model="hr.salary.rule">
+            <field name="name">Early Logout</field>
+            <field name="sequence" eval="7"/>
+            <field name="code">EL1</field>
+            <field name="category_id" ref="hr_payroll.DED"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = 0</field>
+        </record>
+
+        <record id="hr_rule_AZ_net" model="hr.salary.rule">
+            <field name="name">Net Salary</field>
+            <field name="sequence" eval="200"/>
+            <field name="code">NET</field>
+            <field name="category_id" ref="hr_payroll.NET"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = categories.REAL + categories.ALW + categories.DED</field>
+            <field name="register_id" ref="contrib_register_employeess"/>
+        </record>
+
+        <!-- Salary Structure -->
+
+         <record id="structure_AZ" model="hr.payroll.structure">
+            <field name="code">BASEAZ</field>
+            <field name="name">Attendance connection structure</field>
+            <field eval="[(6, 0, [ref('hr_payroll.hr_rule_basic'), ref('hr_payroll.hr_rule_taxable'), ref('hr_rule_NW1'), ref('hr_rule_OT1'), ref('hr_rule_LL1'), ref('hr_rule_ABS'), ref('hr_rule_AZ_net')])]" name="rule_ids"/>
+            <field name="company_id" ref="base.main_company"/>
+        </record>
+
+    </data>
+</odoo>

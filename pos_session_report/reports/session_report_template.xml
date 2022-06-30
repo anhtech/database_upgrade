@@ -1,0 +1,760 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data>
+
+    <template id="pos_session_receipt_template_document">
+        <t t-call="web.basic_layout">
+            <style>
+                table, th, td {
+                  border: 1px solid black;
+                  border-collapse: collapse;
+                }
+            </style>
+            <div name="company_logo">
+                 <center>
+                    <img t-att-src="'/web/binary/company_logo'" height="100px" width="200px" />
+                 </center>
+            </div>
+            <div name="content">
+                <table style="width:100%; border-bottom: none;">
+                  <tr>
+                    <th><center>JAWAD EXPRESS</center></th>
+                  </tr>
+                  <tr>
+                    <td><center><span t-esc="data['branch_name']"/></center></td>
+                  </tr>
+                  <tr>
+                    <td><center>-</center></td>
+                  </tr>
+                  <tr>
+                    <td><center>X-Out Report - <span t-esc="data['xout_report']"/></center></td>
+                  </tr>
+                  <tr>
+                    <td style="border-bottom: none;"><center>-</center></td>
+                  </tr>
+                </table>
+
+                <table style="width:100%; border-bottom: none;">
+                  <tr>
+                    <th style="text-align:left; font-weight: normal;">Shift: <span t-esc="data['session_id']"/></th>
+                  </tr>
+                  <tr>
+                    <td style="border-bottom: none;">Cashier: <span t-esc="data['cashier']"/></td>
+                  </tr>
+                </table>
+
+                <table style="width:100%; border-bottom: none;">
+                  <tr>
+                    <th style="text-align:left; font-weight: normal; border-right: none;"><center>Start Time</center></th>
+                    <th style="text-align:left; font-weight: normal; border-left: none;"><center><span t-esc="data['start_at']"/></center></th>
+                  </tr>
+                  <tr>
+                    <td style="border-right: none; border-bottom: none;"><center>End Time</center></td>
+                    <td style="border-left: none; border-bottom: none;"><center><span t-esc="data['stop_at']"/></center></td>
+                  </tr>
+                </table>
+
+                <table style="width:100%; border-bottom: none;">
+                  <tr>
+                    <th style="text-align:left; font-weight: normal; border-bottom: none;"><center>-</center></th>
+                  </tr>
+                </table>
+
+                <table style="width:100%; border-bottom: none;">
+                  <tr>
+                    <th style="text-align:left; font-weight: normal;"></th>
+                    <th style="text-align:left; font-weight: normal;">Sales</th>
+                    <th style="text-align:left; font-weight: normal;">Return</th>
+                    <th style="text-align:left; font-weight: normal;">Net</th>
+                  </tr>
+                  <tr>
+                    <td style="border-bottom: none; font-weight: bold;">Sales:</td>
+                    <td style="border-bottom: none;"><span t-esc="'%.3f'%data['sales_amount']"/></td>
+                    <td style="border-bottom: none;"><span t-esc="'%.3f'%data['return_amount']"/></td>
+                    <td style="border-bottom: none;"><span t-esc="'%.3f'%data['net_amount']"/></td>
+                  </tr>
+                </table>
+
+                <table style="width:100%; border-bottom: none;">
+                  <tr>
+                    <th style="text-align:left; font-weight: normal;"><center>-</center></th>
+                  </tr>
+                  <tr>
+                    <td style="border-bottom: none; font-weight: bold;">Minus:</td>
+                  </tr>
+                </table>
+
+                <table style="width:100%; border-bottom: none;">
+                  <tr>
+                    <th style="text-align:left; font-weight: normal;">Net S/C</th>
+                    <th style="text-align:left; font-weight: normal;">0.000</th>
+                  </tr>
+                  <tr>
+                    <td>Net Credit</td>
+                    <td>0.000</td>
+                  </tr>
+                  <tr>
+                    <td>Net Cash</td>
+                    <td>0.000</td>
+                  </tr>
+                  <tr>
+                    <td>Net Gift Card</td>
+                    <td>0.000</td>
+                  </tr>
+                  <tr>
+                    <td style="border-bottom: none;">Cash Flow Total</td>
+                    <td style="border-bottom: none;">0.000</td>
+                  </tr>
+                </table>
+
+                <table style="width:100%; border-bottom: none;">
+                  <tr>
+                    <th style="text-align:left; font-weight: normal;"><center>-</center></th>
+                  </tr>
+                  <tr>
+                    <td style="border-bottom: none; font-weight: bold;">Discount Breakout:</td>
+                  </tr>
+                </table>
+
+                <table style="width:100%; border-bottom: none;">
+                  <tr>
+                    <th style="text-align:left; font-weight: normal;">Type</th>
+                    <th style="text-align:left; font-weight: normal;">Paid In</th>
+                    <th style="text-align:left; font-weight: normal;">Paid Out</th>
+                    <th style="text-align:left; font-weight: normal;">Net</th>
+                  </tr>
+                  <tr>
+                    <td style="font-weight: bold;">Bill Discount</td>
+                    <td>0.000</td>
+                    <td>0.000</td>
+                    <td>0.000</td>
+                  </tr>
+                  <tr>
+                    <td style="font-weight: bold;">Product Discount</td>
+                    <td>0.000</td>
+                    <td>0.000</td>
+                    <td>0.000</td>
+                  </tr>
+                  <tr>
+                    <td style="border-bottom: none;">Total</td>
+                    <td style="border-bottom: none;">0.000</td>
+                    <td style="border-bottom: none;">0.000</td>
+                    <td style="border-bottom: none;">0.000</td>
+                  </tr>
+                </table>
+
+                <table style="width:100%; border-bottom: none;">
+                  <tr>
+                    <th style="text-align:left; border-bottom: none;">Receipt Counts:</th>
+                  </tr>
+                </table>
+
+                <table style="width:100%; border-bottom: none;">
+                  <tr>
+                    <th style="text-align:left; font-weight: normal;">Sales</th>
+                    <th style="text-align:left; font-weight: normal;"><span t-esc="data['number_of_sales']"/></th>
+                  </tr>
+                  <tr>
+                    <td>Returns</td>
+                    <td><span t-esc="data['number_of_returns']"/></td>
+                  </tr>
+                  <tr>
+                    <td>Cancells/Reversed</td>
+                    <td>0</td>
+                  </tr>
+                  <tr>
+                    <td style="border-bottom: none;">Cash Pickup</td>
+                    <td style="border-bottom: none;">0</td>
+                  </tr>
+                </table>
+
+                <table style="width:100%; border-bottom: none;">
+                  <tr>
+                    <th style="text-align:left; font-weight: normal;"><center>-</center></th>
+                  </tr>
+                  <tr>
+                    <td style="font-weight: bold;">Card Breakup:</td>
+                  </tr>
+                  <tr>
+                    <td style="border-bottom: none; font-weight: bold;">BHD</td>
+                  </tr>
+                </table>
+
+                <table style="width:100%; border-bottom: none;">
+                  <tr>
+                    <th style="text-align:left; font-weight: normal;">Opening:</th>
+                    <th style="text-align:left; font-weight: normal;"><span t-esc="'%.3f'%data['opening_cash']"/></th>
+                  </tr>
+                  <tr>
+                    <td>Paid In:</td>
+                    <td><span t-esc="'%.3f'%data['paid_in_cash']"/></td>
+                  </tr>
+                  <tr>
+                    <td>Paid Out:</td>
+                    <td><span t-esc="'%.3f'%data['paid_out_cash']"/></td>
+                  </tr>
+                  <tr>
+                    <td>Cash Pickup:</td>
+                    <td>0.000</td>
+                  </tr>
+                  <tr>
+                    <td>PCash In:</td>
+                    <td>0.000</td>
+                  </tr>
+                  <tr>
+                    <td>PCash Out:</td>
+                    <td>0.000</td>
+                  </tr>
+                  <tr>
+                    <td>Count:</td>
+                    <td>0.000</td>
+                  </tr>
+                  <tr>
+                    <td>(-)Short/Excess:</td>
+                    <td><span t-esc="'%.3f'%data['short_excess_cash']"/></td>
+                  </tr>
+                  <tr>
+                    <td style="border-bottom: none;">Net:</td>
+                    <td style="border-bottom: none;"><span t-esc="'%.3f'%data['net_cash']"/></td>
+                  </tr>
+                </table>
+
+                <table style="width:100%; border-bottom: none;">
+                  <tr>
+                    <th style="text-align:left; border-bottom: none;">All Cards</th>
+                  </tr>
+                </table>
+
+                <table style="width:100%; border-bottom: none;">
+                  <tr>
+                    <th style="text-align:left; font-weight: normal;">Paid In:</th>
+                    <th style="text-align:left; font-weight: normal;"><span t-esc="'%.3f'%data['paid_in_allcards']"/></th>
+                  </tr>
+                  <tr>
+                    <td>Paid Out:</td>
+                    <td><span t-esc="'%.3f'%data['paid_out_allcards']"/></td>
+                  </tr>
+                  <tr>
+                    <td>Count:</td>
+                    <td>0.000</td>
+                  </tr>
+                  <tr>
+                    <td>(-)Short/Excess:</td>
+                    <td><span t-esc="'%.3f'%data['short_excess_allcards']"/></td>
+                  </tr>
+                  <tr>
+                    <td style="border-bottom: none;">Net:</td>
+                    <td style="border-bottom: none;"><span t-esc="'%.3f'%data['net_allcards']"/></td>
+                  </tr>
+                </table>
+
+                <table style="width:100%; border-bottom: none;">
+                  <tr>
+                    <th style="text-align:left; border-bottom: none;">MASTER (C-store NBB)</th>
+                  </tr>
+                </table>
+
+                <table style="width:100%; border-bottom: none;">
+                  <tr>
+                    <th style="text-align:left; font-weight: normal;">Paid In:</th>
+                    <th style="text-align:left; font-weight: normal;"><span t-esc="'%.3f'%data['paid_in_MASTER']"/></th>
+                  </tr>
+                  <tr>
+                    <td>Paid Out:</td>
+                    <td><span t-esc="'%.3f'%data['paid_out_MASTER']"/></td>
+                  </tr>
+                  <tr>
+                    <td>Count:</td>
+                    <td>0.000</td>
+                  </tr>
+                  <tr>
+                    <td>(-)Short/Excess:</td>
+                    <td><span t-esc="'%.3f'%data['short_excess_MASTER']"/></td>
+                  </tr>
+                  <tr>
+                    <td style="border-bottom: none;">Net:</td>
+                    <td style="border-bottom: none;"><span t-esc="'%.3f'%data['net_MASTER']"/></td>
+                  </tr>
+                </table>
+
+                <table style="width:100%; border-bottom: none;">
+                  <tr>
+                    <th style="text-align:left; border-bottom: none;">VISA (C-store NBB)</th>
+                  </tr>
+                </table>
+
+                <table style="width:100%; border-bottom: none;">
+                  <tr>
+                    <th style="text-align:left; font-weight: normal;">Paid In:</th>
+                    <th style="text-align:left; font-weight: normal;"><span t-esc="'%.3f'%data['paid_in_VISA']"/></th>
+                  </tr>
+                  <tr>
+                    <td>Paid Out:</td>
+                    <td><span t-esc="'%.3f'%data['paid_out_VISA']"/></td>
+                  </tr>
+                  <tr>
+                    <td>Count:</td>
+                    <td>0.000</td>
+                  </tr>
+                  <tr>
+                    <td>(-)Short/Excess:</td>
+                    <td><span t-esc="'%.3f'%data['short_excess_VISA']"/></td>
+                  </tr>
+                  <tr>
+                    <td style="border-bottom: none;">Net:</td>
+                    <td style="border-bottom: none;"><span t-esc="'%.3f'%data['net_VISA']"/></td>
+                  </tr>
+                </table>
+
+              <t t-if="data['MAESTRO_count'] != 0">
+                <table style="width:100%; border-bottom: none;">
+                  <tr>
+                    <th style="text-align:left; border-bottom: none;">MAESTRO</th>
+                  </tr>
+                </table>
+
+                <table style="width:100%; border-bottom: none;">
+                  <tr>
+                    <th style="text-align:left; font-weight: normal;">Paid In:</th>
+                    <th style="text-align:left; font-weight: normal;"><span t-esc="'%.3f'%data['paid_in_MAESTRO']"/></th>
+                  </tr>
+                  <tr>
+                    <td>Paid Out:</td>
+                    <td><span t-esc="'%.3f'%data['paid_out_MAESTRO']"/></td>
+                  </tr>
+                  <tr>
+                    <td>Count:</td>
+                    <td>0.000</td>
+                  </tr>
+                  <tr>
+                    <td>(-)Short/Excess:</td>
+                    <td><span t-esc="'%.3f'%data['short_excess_MAESTRO']"/></td>
+                  </tr>
+                  <tr>
+                    <td style="border-bottom: none;">Net:</td>
+                    <td style="border-bottom: none;"><span t-esc="'%.3f'%data['net_MAESTRO']"/></td>
+                  </tr>
+                </table>
+              </t>
+
+              <t t-if="data['AMEX_count'] != 0">
+                <table style="width:100%; border-bottom: none;">
+                  <tr>
+                    <th style="text-align:left; border-bottom: none;">AMEX</th>
+                  </tr>
+                </table>
+
+                <table style="width:100%; border-bottom: none;">
+                  <tr>
+                    <th style="text-align:left; font-weight: normal;">Paid In:</th>
+                    <th style="text-align:left; font-weight: normal;"><span t-esc="'%.3f'%data['paid_in_AMEX']"/></th>
+                  </tr>
+                  <tr>
+                    <td>Paid Out:</td>
+                    <td><span t-esc="'%.3f'%data['paid_out_AMEX']"/></td>
+                  </tr>
+                  <tr>
+                    <td>Count:</td>
+                    <td>0.000</td>
+                  </tr>
+                  <tr>
+                    <td>(-)Short/Excess:</td>
+                    <td><span t-esc="'%.3f'%data['short_excess_AMEX']"/></td>
+                  </tr>
+                  <tr>
+                    <td style="border-bottom: none;">Net:</td>
+                    <td style="border-bottom: none;"><span t-esc="'%.3f'%data['net_AMEX']"/></td>
+                  </tr>
+                </table>
+              </t>
+
+              <t t-if="data['JPC_count'] != 0">
+                <table style="width:100%; border-bottom: none;">
+                  <tr>
+                    <th style="text-align:left; border-bottom: none;">JPC</th>
+                  </tr>
+                </table>
+
+                <table style="width:100%; border-bottom: none;">
+                  <tr>
+                    <th style="text-align:left; font-weight: normal;">Paid In:</th>
+                    <th style="text-align:left; font-weight: normal;"><span t-esc="'%.3f'%data['paid_in_JPC']"/></th>
+                  </tr>
+                  <tr>
+                    <td>Paid Out:</td>
+                    <td><span t-esc="'%.3f'%data['paid_out_JPC']"/></td>
+                  </tr>
+                  <tr>
+                    <td>Count:</td>
+                    <td>0.000</td>
+                  </tr>
+                  <tr>
+                    <td>(-)Short/Excess:</td>
+                    <td><span t-esc="'%.3f'%data['short_excess_JPC']"/></td>
+                  </tr>
+                  <tr>
+                    <td style="border-bottom: none;">Net:</td>
+                    <td style="border-bottom: none;"><span t-esc="'%.3f'%data['net_JPC']"/></td>
+                  </tr>
+                </table>
+              </t>
+
+              <t t-if="data['DEBIT_count'] != 0">
+                <table style="width:100%; border-bottom: none;">
+                  <tr>
+                    <th style="text-align:left; border-bottom: none;">DEBIT</th>
+                  </tr>
+                </table>
+
+                <table style="width:100%; border-bottom: none;">
+                  <tr>
+                    <th style="text-align:left; font-weight: normal;">Paid In:</th>
+                    <th style="text-align:left; font-weight: normal;"><span t-esc="'%.3f'%data['paid_in_DEBIT']"/></th>
+                  </tr>
+                  <tr>
+                    <td>Paid Out:</td>
+                    <td><span t-esc="'%.3f'%data['paid_out_DEBIT']"/></td>
+                  </tr>
+                  <tr>
+                    <td>Count:</td>
+                    <td>0.000</td>
+                  </tr>
+                  <tr>
+                    <td>(-)Short/Excess:</td>
+                    <td><span t-esc="'%.3f'%data['short_excess_DEBIT']"/></td>
+                  </tr>
+                  <tr>
+                    <td style="border-bottom: none;">Net:</td>
+                    <td style="border-bottom: none;"><span t-esc="'%.3f'%data['net_DEBIT']"/></td>
+                  </tr>
+                </table>
+              </t>
+
+              <t t-if="data['RPRO_CCN_count'] != 0">
+                <table style="width:100%; border-bottom: none;">
+                  <tr>
+                    <th style="text-align:left; border-bottom: none;">RPRO CCN</th>
+                  </tr>
+                </table>
+
+                <table style="width:100%; border-bottom: none;">
+                  <tr>
+                    <th style="text-align:left; font-weight: normal;">Paid In:</th>
+                    <th style="text-align:left; font-weight: normal;"><span t-esc="'%.3f'%data['paid_in_RPRO_CCN']"/></th>
+                  </tr>
+                  <tr>
+                    <td>Paid Out:</td>
+                    <td><span t-esc="'%.3f'%data['paid_out_RPRO_CCN']"/></td>
+                  </tr>
+                  <tr>
+                    <td>Count:</td>
+                    <td>0.000</td>
+                  </tr>
+                  <tr>
+                    <td>(-)Short/Excess:</td>
+                    <td><span t-esc="'%.3f'%data['short_excess_RPRO_CCN']"/></td>
+                  </tr>
+                  <tr>
+                    <td style="border-bottom: none;">Net:</td>
+                    <td style="border-bottom: none;"><span t-esc="'%.3f'%data['net_RPRO_CCN']"/></td>
+                  </tr>
+                </table>
+              </t>
+
+              <t t-if="data['TAP_PAY_count'] != 0">
+                <table style="width:100%; border-bottom: none;">
+                  <tr>
+                    <th style="text-align:left; border-bottom: none;">TAP PAY</th>
+                  </tr>
+                </table>
+
+                <table style="width:100%; border-bottom: none;">
+                  <tr>
+                    <th style="text-align:left; font-weight: normal;">Paid In:</th>
+                    <th style="text-align:left; font-weight: normal;"><span t-esc="'%.3f'%data['paid_in_TAP_PAY']"/></th>
+                  </tr>
+                  <tr>
+                    <td>Paid Out:</td>
+                    <td><span t-esc="'%.3f'%data['paid_out_TAP_PAY']"/></td>
+                  </tr>
+                  <tr>
+                    <td>Count:</td>
+                    <td>0.000</td>
+                  </tr>
+                  <tr>
+                    <td>(-)Short/Excess:</td>
+                    <td><span t-esc="'%.3f'%data['short_excess_TAP_PAY']"/></td>
+                  </tr>
+                  <tr>
+                    <td style="border-bottom: none;">Net:</td>
+                    <td style="border-bottom: none;"><span t-esc="'%.3f'%data['net_TAP_PAY']"/></td>
+                  </tr>
+                </table>
+              </t>
+
+              <t t-if="data['CREDIMAX_QR_count'] != 0">
+                <table style="width:100%; border-bottom: none;">
+                  <tr>
+                    <th style="text-align:left; border-bottom: none;">CREDIMAX QR</th>
+                  </tr>
+                </table>
+
+                <table style="width:100%; border-bottom: none;">
+                  <tr>
+                    <th style="text-align:left; font-weight: normal;">Paid In:</th>
+                    <th style="text-align:left; font-weight: normal;"><span t-esc="'%.3f'%data['paid_in_CREDIMAX_QR']"/></th>
+                  </tr>
+                  <tr>
+                    <td>Paid Out:</td>
+                    <td><span t-esc="'%.3f'%data['paid_out_CREDIMAX_QR']"/></td>
+                  </tr>
+                  <tr>
+                    <td>Count:</td>
+                    <td>0.000</td>
+                  </tr>
+                  <tr>
+                    <td>(-)Short/Excess:</td>
+                    <td><span t-esc="'%.3f'%data['short_excess_CREDIMAX_QR']"/></td>
+                  </tr>
+                  <tr>
+                    <td style="border-bottom: none;">Net:</td>
+                    <td style="border-bottom: none;"><span t-esc="'%.3f'%data['net_CREDIMAX_QR']"/></td>
+                  </tr>
+                </table>
+              </t>
+
+              <t t-if="data['BWALLET_count'] != 0">
+                <table style="width:100%; border-bottom: none;">
+                  <tr>
+                    <th style="text-align:left; border-bottom: none;">BWALLET</th>
+                  </tr>
+                </table>
+
+                <table style="width:100%; border-bottom: none;">
+                  <tr>
+                    <th style="text-align:left; font-weight: normal;">Paid In:</th>
+                    <th style="text-align:left; font-weight: normal;"><span t-esc="'%.3f'%data['paid_in_BWALLET']"/></th>
+                  </tr>
+                  <tr>
+                    <td>Paid Out:</td>
+                    <td><span t-esc="'%.3f'%data['paid_out_BWALLET']"/></td>
+                  </tr>
+                  <tr>
+                    <td>Count:</td>
+                    <td>0.000</td>
+                  </tr>
+                  <tr>
+                    <td>(-)Short/Excess:</td>
+                    <td><span t-esc="'%.3f'%data['short_excess_BWALLET']"/></td>
+                  </tr>
+                  <tr>
+                    <td style="border-bottom: none;">Net:</td>
+                    <td style="border-bottom: none;"><span t-esc="'%.3f'%data['net_BWALLET']"/></td>
+                  </tr>
+                </table>
+              </t>
+
+              <t t-if="data['VIVA_CASH_count'] != 0">
+                <table style="width:100%; border-bottom: none;">
+                  <tr>
+                    <th style="text-align:left; border-bottom: none;">VIVA CASH</th>
+                  </tr>
+                </table>
+
+                <table style="width:100%; border-bottom: none;">
+                  <tr>
+                    <th style="text-align:left; font-weight: normal;">Paid In:</th>
+                    <th style="text-align:left; font-weight: normal;"><span t-esc="'%.3f'%data['paid_in_VIVA_CASH']"/></th>
+                  </tr>
+                  <tr>
+                    <td>Paid Out:</td>
+                    <td><span t-esc="'%.3f'%data['paid_out_VIVA_CASH']"/></td>
+                  </tr>
+                  <tr>
+                    <td>Count:</td>
+                    <td>0.000</td>
+                  </tr>
+                  <tr>
+                    <td>(-)Short/Excess:</td>
+                    <td><span t-esc="'%.3f'%data['short_excess_VIVA_CASH']"/></td>
+                  </tr>
+                  <tr>
+                    <td style="border-bottom: none;">Net:</td>
+                    <td style="border-bottom: none;"><span t-esc="'%.3f'%data['net_VIVA_CASH']"/></td>
+                  </tr>
+                </table>
+              </t>
+
+                <table style="width:100%; border-bottom: none;">
+                  <tr>
+                    <th style="text-align:left; border-bottom: none;">All Coupons</th>
+                  </tr>
+                </table>
+
+                <table style="width:100%; border-bottom: none;">
+                  <tr>
+                    <th style="text-align:left; font-weight: normal;">Paid In:</th>
+                    <th style="text-align:left; font-weight: normal;">0.000</th>
+                  </tr>
+                  <tr>
+                    <td>Paid Out:</td>
+                    <td>0.000</td>
+                  </tr>
+                  <tr>
+                    <td>Count:</td>
+                    <td>0.000</td>
+                  </tr>
+                  <tr>
+                    <td>(-)Short/Excess:</td>
+                    <td>0.000</td>
+                  </tr>
+                  <tr>
+                    <td style="border-bottom: none;">Net:</td>
+                    <td style="border-bottom: none;">0.000</td>
+                  </tr>
+                </table>
+
+                <table style="width:100%; border-bottom: none;">
+                  <tr>
+                    <th style="text-align:left;">Cash Drops:</th>
+                  </tr>
+                  <tr>
+                    <td><center>-</center></td>
+                  </tr>
+                  <tr>
+                    <td><center>-</center></td>
+                  </tr>
+                  <tr>
+                    <td style="border-bottom: none; font-weight: bold;">Credit Card Listing:</td>
+                  </tr>
+                </table>
+
+                <table style="width:100%; border-bottom: none;">
+                  <tr>
+                    <th style="text-align:left; font-weight: normal;">Card Name</th>
+                    <th style="text-align:left; font-weight: normal;">Amount</th>
+                  </tr>
+                  <t t-foreach="cardslist" t-as="card">
+                    <tr>
+                      <td><span t-esc="card['name']"/></td>
+                      <td><span t-esc="'%.3f'%card['amount']"/></td>
+                    </tr>
+                  </t>
+                </table>
+
+                <br/>
+
+                <table style="width:100%; border-bottom: none;">
+                  <tr>
+                    <th style="border-bottom: none; text-align:left;">Cards List:</th>
+                  </tr>
+                </table>
+
+                <table style="width:100%; border-bottom: none;">
+                  <tr>
+                    <th style="text-align:left; font-weight: normal;">EDC</th>
+                    <th style="text-align:left; font-weight: normal;">Card</th>
+                    <th style="text-align:left; font-weight: normal;">Count</th>
+                    <th style="text-align:left; font-weight: normal;">Amount</th>
+                  </tr>
+                  <tr>
+                    <td>C-store NBB</td>
+                    <td>MASTER</td>
+                    <td><span t-esc="data['MASTER_count']"/></td>
+                    <td><span t-esc="'%.3f'%data['net_MASTER']"/></td>
+                  </tr>
+                  <tr>
+                    <td>C-store NBB</td>
+                    <td>VISA</td>
+                    <td><span t-esc="data['VISA_count']"/></td>
+                    <td><span t-esc="'%.3f'%data['net_VISA']"/></td>
+                  </tr>
+                  <t t-if="data['MAESTRO_count'] != 0">
+                    <tr>
+                      <td>C-store NBB</td>
+                      <td>MAESTRO</td>
+                      <td><span t-esc="data['MAESTRO_count']"/></td>
+                      <td><span t-esc="'%.3f'%data['net_MAESTRO']"/></td>
+                    </tr>
+                  </t>
+                  <t t-if="data['AMEX_count'] != 0">
+                    <tr>
+                      <td>C-store NBB</td>
+                      <td>AMEX</td>
+                      <td><span t-esc="data['AMEX_count']"/></td>
+                      <td><span t-esc="'%.3f'%data['net_AMEX']"/></td>
+                    </tr>
+                  </t>
+                  <t t-if="data['JPC_count'] != 0">
+                    <tr>
+                      <td>C-store NBB</td>
+                      <td>JPC</td>
+                      <td><span t-esc="data['JPC_count']"/></td>
+                      <td><span t-esc="'%.3f'%data['net_JPC']"/></td>
+                    </tr>
+                  </t>
+                  <t t-if="data['DEBIT_count'] != 0">
+                    <tr>
+                      <td>C-store NBB</td>
+                      <td>DEBIT</td>
+                      <td><span t-esc="data['DEBIT_count']"/></td>
+                      <td><span t-esc="'%.3f'%data['net_DEBIT']"/></td>
+                    </tr>
+                  </t>
+                  <t t-if="data['RPRO_CCN_count'] != 0">
+                    <tr>
+                      <td>C-store NBB</td>
+                      <td>RPRO CCN</td>
+                      <td><span t-esc="data['RPRO_CCN_count']"/></td>
+                      <td><span t-esc="'%.3f'%data['net_RPRO_CCN']"/></td>
+                    </tr>
+                  </t>
+                  <t t-if="data['TAP_PAY_count'] != 0">
+                    <tr>
+                      <td>C-store NBB</td>
+                      <td>TAP PAY</td>
+                      <td><span t-esc="data['TAP_PAY_count']"/></td>
+                      <td><span t-esc="'%.3f'%data['net_TAP_PAY']"/></td>
+                    </tr>
+                  </t>
+                  <t t-if="data['CREDIMAX_QR_count'] != 0">
+                    <tr>
+                      <td>C-store NBB</td>
+                      <td>CREDIMAX QR</td>
+                      <td><span t-esc="data['CREDIMAX_QR_count']"/></td>
+                      <td><span t-esc="'%.3f'%data['net_CREDIMAX_QR']"/></td>
+                    </tr>
+                  </t>
+                  <t t-if="data['BWALLET_count'] != 0">
+                    <tr>
+                      <td>C-store NBB</td>
+                      <td>BWALLET</td>
+                      <td><span t-esc="data['BWALLET_count']"/></td>
+                      <td><span t-esc="'%.3f'%data['net_BWALLET']"/></td>
+                    </tr>
+                  </t>
+                  <t t-if="data['VIVA_CASH_count'] != 0">
+                    <tr>
+                      <td>C-store NBB</td>
+                      <td>VIVA CASH</td>
+                      <td><span t-esc="data['VIVA_CASH_count']"/></td>
+                      <td><span t-esc="'%.3f'%data['net_VIVA_CASH']"/></td>
+                    </tr>
+                  </t>
+                </table>
+            </div>
+
+        </t>
+    </template>
+
+
+
+<template id="pos_session_receipt_template">
+    <t t-call="web.html_container">
+        <t t-call="pos_session_report.pos_session_receipt_template_document" />
+    </t>
+</template>
+
+</data>
+</odoo>
+

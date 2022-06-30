@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="report_form_attandance" model="ir.ui.view">
+            <field name="name">report.form.attandance</field>
+            <field name="model">report.wizard</field>
+            <field name="arch" type="xml">
+				<form>
+                    <group>
+                        <group>
+                            <field name="start_date"/>
+                            <field name="end_date"/>
+                        </group>
+                        <group>
+                            <field name="report_type"/>
+                            <field name="is_this_month"/>
+                        </group>
+                    </group>
+                    <group string="Log Discrepancy">
+                        <group>
+                            <field name="early_logout"/>
+                            <field name="late_login"/>
+                            <field name="missing_logout"/>
+                            <field name="absent_lookup"/>
+                        </group>
+                    </group>
+					<footer>
+					<button name="submit" string="Submit" type="object"/>
+					</footer>
+				</form>
+            </field>
+        </record>
+
+        <record id="action_report_wizard" model="ir.actions.act_window">
+            <field name="name">Report Wizard</field>
+            <field name="res_model">report.wizard</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+           <field name="view_id" ref="report_form_attandance"/>
+           <field name="target">new</field>
+        </record>
+
+        <record id="view_employee_form_inherit_bi2" model="ir.ui.view">
+            <field name="name">view.employee.form.inherit.bi2</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_form"/>
+            <field name="arch" type="xml">
+				<xpath expr="//sheet" position="before">
+				<header>
+					<button name="%(action_report_wizard)d" type='action' string='Print Attendance Report'/>
+                </header>
+				</xpath>
+            </field>
+        </record>
+
+        <!-- Attendance reports by departments - start -->
+
+        <record id="group_report_form_attandance" model="ir.ui.view">
+            <field name="name">report.group.attandance</field>
+            <field name="model">report.groupwizard</field>
+            <field name="arch" type="xml">
+				<form>
+					<group>
+						<field name="start_date"/>
+						<field name="end_date"/>
+                        <field name="is_this_month"/>
+					</group>
+					<footer>
+					<button name="submit" string="Submit" type="object"/>
+					</footer>
+				</form>
+            </field>
+        </record>
+
+        <record id="action_group_report_wizard" model="ir.actions.act_window">
+            <field name="name">Group Report Wizard</field>
+            <field name="res_model">report.groupwizard</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+           <field name="view_id" ref="group_report_form_attandance"/>
+           <field name="target">new</field>
+        </record>
+
+        <record id="view_department_form_inherit_bi" model="ir.ui.view">
+            <field name="name">hr.department.form.inherit.bi</field>
+            <field name="model">hr.department</field>
+            <field name="inherit_id" ref="hr.view_department_form"/>
+            <field name="arch" type="xml">
+				<xpath expr="//sheet" position="before">
+				<header>
+					<button name="%(action_group_report_wizard)d" type='action' string='Print Department Attendance Report'/>
+                </header>
+				</xpath>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="wizard_action_group_report_view">
+			<field name="name">Group Report Wizard</field>
+			<field name="model">bi_attendance_report.action_group_report</field>
+			<field name="arch" type="xml">
+				<form>
+                    <group>
+                        <group>
+                            <field name="start_date"/>
+                            <field name="end_date"/>
+                        </group>
+                        <group>
+                            <field name="report_type"/>
+                            <field name="is_this_month"/>
+                        </group>
+                    </group>
+					<footer>
+					<button name="action_group_report" string="Submit" type="object"/>
+					</footer>
+				</form>
+			</field>
+		</record>
+
+        <record id="action_group_report" model="ir.actions.act_window">
+            <field name="name">Print Group Attendance Report</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">bi_attendance_report.action_group_report</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="binding_model_id" ref="hr.model_hr_employee" />
+            <field name="binding_type">report</field>
+        </record>
+
+
+        <!-- Attendance reports by departments - end -->
+
+    </data>
+</odoo>
+
+

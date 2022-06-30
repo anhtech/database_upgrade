@@ -1,0 +1,100 @@
+<odoo>
+    <data>
+
+		<template id="payment_schedule_page_template">
+            <t t-if="not o" t-set="o" t-value="doc"/>
+
+            <t t-if="not company">
+                <!-- Multicompany -->
+                <t t-if="company_id">
+                    <t t-set="company" t-value="company_id"/>
+                </t>
+                <t t-elif="o and 'company_id' in o">
+                    <t t-set="company" t-value="o.company_id.sudo()"/>
+                </t>
+                <t t-else="else">
+                    <t t-set="company" t-value="res_company"/>
+                </t>
+            </t>
+
+            <div class="header"/>
+
+            <div class="article o_report_layout_standard" t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id" t-att-data-oe-lang="o and o.env.context.get('lang')">
+                <t t-set="address"/>
+                <t t-call="web.address_layout"/>
+				<div class="page">
+                    <br/>
+                    <div class="row">
+                        <div class="col-12">
+                            <center>
+                                <span style="font-size:22px;font-family: 'Lato', sans-serif;color:#231f20;">PAYMENT SCHEDULE</span>
+                            </center>
+                        </div>
+                    </div>
+                    <br/>
+
+                    <div class="row">
+                        <div class="col-4 text-right">
+                            <span style="font-size:23px;font-family: 'Lato', sans-serif;color:#231f20;">MONTH</span>
+                        </div>
+                        <div class="col-4 text-center">
+                            <span style="font-size:23px;font-family: 'Lato', sans-serif;color:#231f20;">PAYMENT DATE</span>
+                        </div>
+                        <div class="col-4 text-left">
+                            <span style="font-size:23px;font-family: 'Lato', sans-serif;color:#231f20;">AMOUNT</span>
+                        </div>
+                    </div>
+                    <br/>
+                    <t t-foreach="o.payment_schedule" t-as="line">
+                        <div class="row">
+                            <div class="col-1"/>
+                            <div class="col-3 text-center">
+                                <div style="border: 2px solid black; padding: 10px;">
+                                    <span style="font-size:18px;font-family: 'Lato', sans-serif;color:#231f20;">
+                                        <t t-esc="dict(line.fields_get(allfields=['month'])['month']['selection'])[line.month]"/> <t t-esc="line.year"/>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-4 text-center">
+                                <div style="border: 3px solid black; padding: 10px;">
+                                    <span style="font-size:20px;font-family: 'Lato', sans-serif;color:#231f20;">
+                                        <t t-esc="line.payment_date"/>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-3 text-center">
+                                <div style="border: 2px solid black; padding: 10px;">
+                                    <span style="font-size:18px;font-family: 'Lato', sans-serif;color:#231f20;">
+                                        <t t-esc="line.amount" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-1"/>
+                        </div>
+                        <div style="line-height:50%;">
+                            <br/>
+                        </div>
+                    </t>
+
+
+
+
+
+
+
+                </div>
+            </div>
+
+            <div class="footer o_standard_footer">
+                <div class="row">
+                    <div class="col-7"/>
+                    <div class="col-5">
+                        <img src="/ywebh_quotation_letterhead/static/img/half_quotation_footer.png" class="float-right" style="width: 100%;"/>
+                    </div>
+                </div>
+            </div>
+
+		</template>
+
+    </data>
+</odoo>

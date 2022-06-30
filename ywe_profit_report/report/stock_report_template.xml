@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data>
+<template id="action_stock_report_template">
+<t t-call="web.html_container">
+    <t t-if="not company">
+        <!-- Multicompany -->
+        <t t-if="company_id">
+            <t t-set="company" t-value="company_id"/>
+        </t>
+        <t t-elif="o and 'company_id' in o">
+            <t t-set="company" t-value="o.company_id.sudo()"/>
+        </t>
+        <t t-else="else">
+            <t t-set="company" t-value="res_company"/>
+        </t>
+    </t>
+    <div class="article">
+                <div style="position: relative; text-align: center;">
+                    <ul class="list-unstyled">
+                        <li><h4><t t-esc="company.name"/></h4></li>
+                        <li><h5>Inventory Profitability Report</h5></li>
+                        <li><h5>For the Period From <span t-esc="data['start_date']"/> to <span t-esc="data['end_date']"/></h5></li>
+<!--                            <li>Date: <span t-esc="data['printing_date']"/></li>-->
+<!--                            <li>Time: <span t-esc="data['printing_time']"/></li>-->
+                    </ul>
+                </div>
+                <table  style="border: 1px solid black;" width="100%">
+                     <thead>
+                            <tr style="border: 1px solid black;">
+                                <th style="border: 1px solid black;" width="30%"><center>Item ID</center></th>
+                                <th style="border: 1px solid black;" width="10%"><center>Units Sold</center></th>
+                                <th style="border: 1px solid black;" width="12%"><center>Sales($)</center></th>
+                                <th style="border: 1px solid black;" width="12%"><center>Cost($)</center></th>
+                                <th style="border: 1px solid black;" width="11%"><center>Profit(%)</center></th>
+                                <th style="border: 1px solid black;" width="14%"><center>Gross Profit($)</center></th>
+                                <th style="border: 1px solid black;" width="11%"><center>Qty on Hand</center></th>
+                            </tr>
+                     </thead>
+                    <t t-foreach="data['products_data']" t-as="line">
+                        <tr>
+                            <td><center><span t-esc="data['products_data'][line]['name']"/></center></td>
+                            <td><center><span t-esc="'%.3f'%data['products_data'][line]['units_sold']"/></center></td>
+                            <td><center><span t-esc="'%.3f'%data['products_data'][line]['sales']"/></center></td>
+                            <td><center><span t-esc="'%.3f'%data['products_data'][line]['costs']"/></center></td>
+                            <td><center><span t-esc="'%.2f'%data['products_data'][line]['percentage']"/>%</center></td>
+                            <td><center><span t-esc="'%.3f'%data['products_data'][line]['gross_profit']"/></center></td>
+                            <td><center><span t-esc="'%.3f'%data['products_data'][line]['qty_on_hand']"/></center></td>
+                        </tr>
+                    </t>
+                    <t t-set='total_cost' t-value="sum(data['products_data'][line]['costs'] for line in data['products_data'])"/>
+                    <t t-if="total_cost==0">
+                        <t t-set='profit_percentage' t-value="sum(data['products_data'][line]['gross_profit'] for line in data['products_data'])/1"/>
+                        <t t-set='profit_percentage' t-value="profit_percentage*100.0"/>
+                    </t>
+                    <t t-else="">
+                        <t t-set='profit_percentage' t-value="sum(data['products_data'][line]['gross_profit'] for line in data['products_data'])/total_cost"/>
+                        <t t-set='profit_percentage' t-value="profit_percentage*100.0"/>
+                    </t>
+                    <tr style="border: 1px solid black;">
+                        <td style="border: 1px solid black;"><center>Total</center></td>
+                        <td style="border: 1px solid black;"><center><span t-esc="'%.3f'%sum(data['products_data'][line]['units_sold'] for line in data['products_data'])"/></center></td>
+                        <td style="border: 1px solid black;"><center><span t-esc="'%.3f'%sum(data['products_data'][line]['sales'] for line in data['products_data'])"/></center></td>
+                        <td style="border: 1px solid black;"><center><span t-esc="'%.3f'%total_cost"/></center></td>
+                        <td style="border: 1px solid black;"><center><span t-esc="'%.3f'%profit_percentage"/>%</center></td>
+                        <td style="border: 1px solid black;"><center><span t-esc="'%.3f'%sum(data['products_data'][line]['gross_profit'] for line in data['products_data'])"/></center></td>
+                        <td style="border: 1px solid black;"><center>-</center></td>
+                    </tr>
+                </table><br/>
+
+                <table  style="border: 1px solid black;" width="100%">
+                     <thead>
+                            <tr style="border: 1px solid black;">
+                                <th style="border: 1px solid black;" width="30%"><center>Category Name</center></th>
+                                <th style="border: 1px solid black;" width="10%"><center>Units Sold</center></th>
+                                <th style="border: 1px solid black;" width="12%"><center>Sales($)</center></th>
+                                <th style="border: 1px solid black;" width="12%"><center>Cost($)</center></th>
+                                <th style="border: 1px solid black;" width="11%"><center>Profit(%)</center></th>
+                                <th style="border: 1px solid black;" width="14%"><center>Gross Profit($)</center></th>
+                                <th style="border: 1px solid black;" width="11%"><center>Qty on Hand</center></th>
+                            </tr>
+                     </thead>
+                    <t t-foreach="data['categories_data']" t-as="line">
+                        <tr>
+                            <td><center><span t-esc="data['categories_data'][line]['name']"/></center></td>
+                            <td><center><span t-esc="'%.3f'%data['categories_data'][line]['units_sold']"/></center></td>
+                            <td><center><span t-esc="'%.3f'%data['categories_data'][line]['sales']"/></center></td>
+                            <td><center><span t-esc="'%.3f'%data['categories_data'][line]['costs']"/></center></td>
+                            <td><center><span t-esc="'%.2f'%data['categories_data'][line]['percentage']"/>%</center></td>
+                            <td><center><span t-esc="'%.3f'%data['categories_data'][line]['gross_profit']"/></center></td>
+                            <td><center><span t-esc="'%.3f'%data['categories_data'][line]['qty_on_hand']"/></center></td>
+                        </tr>
+                    </t>
+                    <t t-set='total_cost' t-value="sum(data['categories_data'][line]['costs'] for line in data['categories_data'])"/>
+                    <t t-if="total_cost==0">
+                        <t t-set='profit_percentage' t-value="sum(data['categories_data'][line]['gross_profit'] for line in data['categories_data'])/1"/>
+                        <t t-set='profit_percentage' t-value="profit_percentage*100.0"/>
+                    </t>
+                    <t t-else="">
+                        <t t-set='profit_percentage' t-value="sum(data['categories_data'][line]['gross_profit'] for line in data['categories_data'])/total_cost"/>
+                        <t t-set='profit_percentage' t-value="profit_percentage*100.0"/>
+                    </t>
+                    <tr style="border: 1px solid black;">
+                        <td style="border: 1px solid black;"><center>Total</center></td>
+                        <td style="border: 1px solid black;"><center><span t-esc="'%.3f'%sum(data['categories_data'][line]['units_sold'] for line in data['categories_data'])"/></center></td>
+                        <td style="border: 1px solid black;"><center><span t-esc="'%.3f'%sum(data['categories_data'][line]['sales'] for line in data['categories_data'])"/></center></td>
+                        <td style="border: 1px solid black;"><center><span t-esc="'%.3f'%total_cost"/></center></td>
+                        <td style="border: 1px solid black;"><center><span t-esc="'%.3f'%profit_percentage"/>%</center></td>
+                        <td style="border: 1px solid black;"><center><span t-esc="'%.3f'%sum(data['categories_data'][line]['gross_profit'] for line in data['categories_data'])"/></center></td>
+                        <td style="border: 1px solid black;"><center>-</center></td>
+                    </tr>
+                </table><br/>
+    </div>
+
+
+
+        <div class="footer">
+            <div class="text-center">
+                <div t-if="report_type == 'pdf'" class="text-muted">
+                    Page: <span class="page"/> / <span class="topage"/>
+                </div>
+            </div>
+        </div>
+
+    </t>
+</template>
+
+</data>
+</odoo>
+

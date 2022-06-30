@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="paperformat_attendance_report" model="report.paperformat">
+            <field name="name">attendance report</field>
+            <field name="default" eval="True"/>
+            <field name="format">A4</field>
+            <field name="page_height">0</field>
+            <field name="page_width">0</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">3</field>
+            <field name="margin_bottom">13</field>
+            <field name="margin_left">7</field>
+            <field name="margin_right">7</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">0</field>
+            <field name="dpi">90</field>
+        </record>
+
+        <report 
+            id="report_pdf_attendance"
+            string="Attendance Report"
+            model="hr.employee" 
+            report_type="qweb-pdf"
+            menu="False"
+            file="bi_attendance_report.attendance_report_template"
+            name="bi_attendance_report.attendance_report_template"
+            paperformat="bi_attendance_report.paperformat_attendance_report"
+        />
+
+        <report
+            id="group_report_pdf_attendance"
+            string="Group Attendance Report"
+            model="hr.department"
+            report_type="qweb-pdf"
+            menu="False"
+            file="bi_attendance_report.attendance_group_report_template"
+            name="bi_attendance_report.attendance_group_report_template"
+            paperformat="bi_attendance_report.paperformat_attendance_report"
+        />
+
+        <report
+            id="group_summary_pdf_report"
+            string="Group Summary Attendance Report"
+            model="hr.employee"
+            report_type="qweb-pdf"
+            menu="False"
+            file="bi_attendance_report.action_group_report_template"
+            name="bi_attendance_report.action_group_report_template"
+            paperformat="bi_attendance_report.paperformat_attendance_report"
+        />
+
+        <report
+            id="group_detailed_pdf_report"
+            string="Group Detailed Attendance Report"
+            model="hr.employee"
+            report_type="qweb-pdf"
+            menu="False"
+            file="bi_attendance_report.action_group_d_report_template"
+            name="bi_attendance_report.action_group_d_report_template"
+            paperformat="bi_attendance_report.paperformat_attendance_report"
+        />
+
+    </data>
+</odoo>

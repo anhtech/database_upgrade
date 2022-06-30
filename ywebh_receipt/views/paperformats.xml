@@ -1,0 +1,16 @@
+ <odoo>
+    <data>
+
+        <report
+            id="account.action_report_payment_receipt"
+            model="account.payment"
+            string="Payment Receipt (Ywe)"
+            report_type="qweb-pdf"
+            name="account.report_payment_receipt"
+            file="account.report_payment_receipt"
+            menu="True"
+            paperformat="ywebh_quotation.quotation_A4"
+        />
+
+    </data>
+ </odoo>

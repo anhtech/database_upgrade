@@ -1,0 +1,13 @@
+<odoo>
+    <data>
+        <report
+            id="all_purchases_report_pdf"
+            string="All Purchases Report"
+            model="report.purchases_report_wizard"
+            report_type="qweb-pdf"
+            menu="False"
+            file="all_purchases_report_montreal.purchases_report_template"
+            name="all_purchases_report_montreal.purchases_report_template"
+        />
+    </data>
+</odoo>

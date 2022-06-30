@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_res_company_bank,access_res_company_bank,model_res_company_bank,,1,1,1,1
+access_payment_schedule,access_payment_schedule,model_payment_schedule,,1,1,1,1
